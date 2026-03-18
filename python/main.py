@@ -5,6 +5,22 @@ import shutil
 import subprocess
 from pathlib import Path
 
+from edge_tts_audio import build_timed_tts_audio
+
+
+def load_dotenv(dotenv_path: Path) -> None:
+    if not dotenv_path.exists():
+        return
+
+    for line in dotenv_path.read_text(encoding="utf-8").splitlines():
+        stripped = line.strip()
+        if not stripped or stripped.startswith("#") or "=" not in stripped:
+            continue
+        key, value = stripped.split("=", 1)
+        key = key.strip()
+        value = value.strip().strip('"').strip("'")
+        if key and key not in os.environ:
+            os.environ[key] = value
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
@@ -26,6 +42,11 @@ def parse_args() -> argparse.Namespace:
         "--install",
         action="store_true",
         help="Run npm install inside the remotion project before rendering.",
+    )
+    parser.add_argument(
+        "--no-tts",
+        action="store_true",
+        help="Skip TTS generation.",
     )
     return parser.parse_args()
 
@@ -99,6 +120,7 @@ def main() -> None:
     args = parse_args()
     project_root = Path(__file__).resolve().parent.parent
     remotion_dir = project_root / "remotion"
+    load_dotenv(project_root / ".env")
     asset_path = (project_root / args.asset).resolve()
     output_arg = args.output or Path(f"output/{asset_path.stem}.mp4")
     output_path = (project_root / output_arg).resolve()
@@ -106,24 +128,40 @@ def main() -> None:
 
     ensure_node_version()
 
+    if not args.no_tts:
+        assets_dir = project_root / "assets"
+        json_assets = sorted(assets_dir.glob("*.json"))
+        if not json_assets:
+            raise RuntimeError(f"No JSON assets found in {assets_dir}.")
+
+        for json_asset in json_assets:
+            data = load_asset(json_asset)
+            tts_output = json_asset.with_suffix(".mp3")
+            build_timed_tts_audio(
+                asset_data=data,
+                output_path=tts_output,
+                project_root=project_root,
+            )
+
     asset_data = load_asset(asset_path)
+
     asset_data["audioStaticPath"] = prepare_audio(asset_path, remotion_dir)
 
-    if args.install:
-        run_command([npm_command(), "install"], cwd=remotion_dir)
-
-    render_command = [
-        npm_command(),
-        "run",
-        "render",
-        "--",
-        str(output_path),
-        "--browser-executable",
-        find_browser_executable(),
-        "--props",
-        json.dumps(asset_data, ensure_ascii=False),
-    ]
-    run_command(render_command, cwd=remotion_dir)
+    # if args.install:
+    #     run_command([npm_command(), "install"], cwd=remotion_dir)
+    #
+    # render_command = [
+    #     npm_command(),
+    #     "run",
+    #     "render",
+    #     "--",
+    #     str(output_path),
+    #     "--browser-executable",
+    #     find_browser_executable(),
+    #     "--props",
+    #     json.dumps(asset_data, ensure_ascii=False),
+    # ]
+    # run_command(render_command, cwd=remotion_dir)
 
 
 if __name__ == "__main__":

@@ -3,3 +3,4 @@ python/__pycache__/
 output/*.mp4
 remotion/public/runtime/*
 !remotion/public/runtime/.gitkeep
+.env
