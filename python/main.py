@@ -19,8 +19,8 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--output",
         type=Path,
-        default=Path("output/abandon.mp4"),
-        help="Output video path.",
+        default=None,
+        help="Output video path. Defaults to output/<asset-name>.mp4.",
     )
     parser.add_argument(
         "--install",
@@ -35,13 +35,21 @@ def load_asset(asset_path: Path) -> dict:
         return json.load(file)
 
 
-def prepare_audio(asset_path: Path, asset_data: dict, remotion_dir: Path) -> str | None:
-    audio_file = asset_data.get("audioFile")
-    if not audio_file:
-        return None
+def find_matching_audio(asset_path: Path) -> Path | None:
+    stem = asset_path.stem
+    candidate_extensions = (".mp3", ".wav", ".m4a", ".aac")
 
-    source_audio = (asset_path.parent / audio_file).resolve()
-    if not source_audio.exists() or source_audio.stat().st_size == 0:
+    for extension in candidate_extensions:
+        candidate = (asset_path.parent / f"{stem}{extension}").resolve()
+        if candidate.exists() and candidate.stat().st_size > 0:
+            return candidate
+
+    return None
+
+
+def prepare_audio(asset_path: Path, remotion_dir: Path) -> str | None:
+    source_audio = find_matching_audio(asset_path)
+    if source_audio is None:
         return None
 
     runtime_dir = remotion_dir / "public" / "runtime"
@@ -92,13 +100,14 @@ def main() -> None:
     project_root = Path(__file__).resolve().parent.parent
     remotion_dir = project_root / "remotion"
     asset_path = (project_root / args.asset).resolve()
-    output_path = (project_root / args.output).resolve()
+    output_arg = args.output or Path(f"output/{asset_path.stem}.mp4")
+    output_path = (project_root / output_arg).resolve()
     output_path.parent.mkdir(parents=True, exist_ok=True)
 
     ensure_node_version()
 
     asset_data = load_asset(asset_path)
-    asset_data["audioStaticPath"] = prepare_audio(asset_path, asset_data, remotion_dir)
+    asset_data["audioStaticPath"] = prepare_audio(asset_path, remotion_dir)
 
     if args.install:
         run_command([npm_command(), "install"], cwd=remotion_dir)

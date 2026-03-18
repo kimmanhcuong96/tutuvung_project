@@ -6,7 +6,7 @@ Project nay duoc tach thanh 3 phan:
 - `remotion/`: HTML/CSS/React template de render video
 - `assets/`: JSON + audio cho tung tu
 
-Template hien tai render ra video doc `1080x1920` de dang upload TikTok.
+Template hien tai render theo khung tham chieu `1024x576`.
 
 ## Cau truc
 
@@ -19,6 +19,11 @@ assets/abandon.json
 assets/abandon.mp3
 output/abandon.mp4
 ```
+
+Audio duoc map truc tiep theo ten file JSON.
+Vi du: `assets/abandon.json` se dung `assets/abandon.mp3`.
+
+Neu khong truyen `--output`, file render mac dinh se la `output/<ten-json>.mp4`.
 
 ## Chay render
 

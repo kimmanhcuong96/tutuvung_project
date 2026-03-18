@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "remotion studio src/index.tsx",
-    "render": "remotion render src/index.tsx VocabWord"
+    "render": "remotion render src/index.tsx VocabWord",
+    "extract:reference-frames": "node scripts/extract-reference-frames.mjs"
   },
   "dependencies": {
     "react": "18.3.1",

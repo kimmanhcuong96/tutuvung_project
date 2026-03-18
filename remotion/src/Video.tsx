@@ -1,5 +1,5 @@
 import React from "react";
-import {AbsoluteFill, Audio} from "remotion";
+import {AbsoluteFill, Audio, staticFile} from "remotion";
 import {Word, WordProps} from "./Word";
 
 export type VideoProps = WordProps & {
@@ -9,7 +9,7 @@ export type VideoProps = WordProps & {
 export const Video: React.FC<VideoProps> = ({audioStaticPath, ...wordProps}) => {
   return (
     <AbsoluteFill style={{backgroundColor: "#040404"}}>
-      {audioStaticPath ? <Audio src={audioStaticPath} /> : null}
+      {audioStaticPath ? <Audio src={staticFile(audioStaticPath)} /> : null}
       <Word {...wordProps} />
     </AbsoluteFill>
   );
