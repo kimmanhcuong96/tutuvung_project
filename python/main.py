@@ -1,0 +1,121 @@
+import argparse
+import json
+import os
+import shutil
+import subprocess
+from pathlib import Path
+
+
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(
+        description="Render a vocab video through Remotion."
+    )
+    parser.add_argument(
+        "--asset",
+        type=Path,
+        default=Path("assets/abandon.json"),
+        help="Path to the word JSON asset.",
+    )
+    parser.add_argument(
+        "--output",
+        type=Path,
+        default=Path("output/abandon.mp4"),
+        help="Output video path.",
+    )
+    parser.add_argument(
+        "--install",
+        action="store_true",
+        help="Run npm install inside the remotion project before rendering.",
+    )
+    return parser.parse_args()
+
+
+def load_asset(asset_path: Path) -> dict:
+    with asset_path.open("r", encoding="utf-8") as file:
+        return json.load(file)
+
+
+def prepare_audio(asset_path: Path, asset_data: dict, remotion_dir: Path) -> str | None:
+    audio_file = asset_data.get("audioFile")
+    if not audio_file:
+        return None
+
+    source_audio = (asset_path.parent / audio_file).resolve()
+    if not source_audio.exists() or source_audio.stat().st_size == 0:
+        return None
+
+    runtime_dir = remotion_dir / "public" / "runtime"
+    runtime_dir.mkdir(parents=True, exist_ok=True)
+    target_audio = runtime_dir / source_audio.name
+    shutil.copy2(source_audio, target_audio)
+    return f"runtime/{source_audio.name}"
+
+
+def run_command(command: list[str], cwd: Path) -> None:
+    subprocess.run(command, cwd=cwd, check=True)
+
+
+def npm_command() -> str:
+    return "npm.cmd" if os.name == "nt" else "npm"
+
+
+def find_browser_executable() -> str:
+    candidates = [
+        Path("C:/Program Files/Google/Chrome/Application/chrome.exe"),
+        Path("C:/Program Files (x86)/Google/Chrome/Application/chrome.exe"),
+        Path("C:/Program Files/Microsoft/Edge/Application/msedge.exe"),
+        Path("C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe"),
+    ]
+    for candidate in candidates:
+        if candidate.exists():
+            return str(candidate)
+    raise RuntimeError("No local Chrome or Edge executable was found for Remotion.")
+
+
+def ensure_node_version() -> None:
+    result = subprocess.run(
+        ["node", "-v"],
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    raw_version = result.stdout.strip().lstrip("v")
+    major = int(raw_version.split(".")[0])
+    if major < 18:
+        raise RuntimeError(
+            f"Detected Node.js {raw_version}. Remotion requires Node.js 18 or newer."
+        )
+
+
+def main() -> None:
+    args = parse_args()
+    project_root = Path(__file__).resolve().parent.parent
+    remotion_dir = project_root / "remotion"
+    asset_path = (project_root / args.asset).resolve()
+    output_path = (project_root / args.output).resolve()
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+
+    ensure_node_version()
+
+    asset_data = load_asset(asset_path)
+    asset_data["audioStaticPath"] = prepare_audio(asset_path, asset_data, remotion_dir)
+
+    if args.install:
+        run_command([npm_command(), "install"], cwd=remotion_dir)
+
+    render_command = [
+        npm_command(),
+        "run",
+        "render",
+        "--",
+        str(output_path),
+        "--browser-executable",
+        find_browser_executable(),
+        "--props",
+        json.dumps(asset_data, ensure_ascii=False),
+    ]
+    run_command(render_command, cwd=remotion_dir)
+
+
+if __name__ == "__main__":
+    main()
