@@ -147,21 +147,21 @@ def main() -> None:
 
     asset_data["audioStaticPath"] = prepare_audio(asset_path, remotion_dir)
 
-    # if args.install:
-    #     run_command([npm_command(), "install"], cwd=remotion_dir)
-    #
-    # render_command = [
-    #     npm_command(),
-    #     "run",
-    #     "render",
-    #     "--",
-    #     str(output_path),
-    #     "--browser-executable",
-    #     find_browser_executable(),
-    #     "--props",
-    #     json.dumps(asset_data, ensure_ascii=False),
-    # ]
-    # run_command(render_command, cwd=remotion_dir)
+    if args.install:
+        run_command([npm_command(), "install"], cwd=remotion_dir)
+
+    render_command = [
+        npm_command(),
+        "run",
+        "render",
+        "--",
+        str(output_path),
+        "--browser-executable",
+        find_browser_executable(),
+        "--props",
+        json.dumps(asset_data, ensure_ascii=False),
+    ]
+    run_command(render_command, cwd=remotion_dir)
 
 
 if __name__ == "__main__":
