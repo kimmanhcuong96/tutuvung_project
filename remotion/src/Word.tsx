@@ -13,14 +13,183 @@ export type WordProps = {
   meaning: string;
   exampleEn: string;
   exampleVi: string;
+  "other meaning"?: string[];
+  renderSeed?: number;
 };
 
-const displayFont = '"Arial Black", "Segoe UI Black", Impact, sans-serif';
+const displayFont = '"Segoe UI", Arial, sans-serif';
 const bodyFont = '"Segoe UI", Arial, sans-serif';
+
+const backgroundColorSets = [
+  {core: "rgba(34,14,62,0.72)", mid: "rgba(12,3,28,1)", deep: "rgba(6,0,18,1)"},
+  {core: "rgba(72,156,220,0.75)", mid: "rgba(52,118,180,0.98)", deep: "rgba(36,92,150,0.98)"},
+  {core: "rgba(92,198,200,0.72)", mid: "rgba(62,160,164,0.98)", deep: "rgba(44,128,132,0.98)"},
+  {core: "rgba(108,206,160,0.72)", mid: "rgba(78,170,130,0.98)", deep: "rgba(58,138,106,0.98)"},
+  {core: "rgba(196,196,120,0.74)", mid: "rgba(166,166,96,0.98)", deep: "rgba(136,136,78,0.98)"},
+  {core: "rgba(190,160,110,0.74)", mid: "rgba(160,132,92,0.98)", deep: "rgba(132,108,74,0.98)"},
+  {core: "rgba(150,180,120,0.72)", mid: "rgba(122,150,98,0.98)", deep: "rgba(98,122,78,0.98)"},
+  {core: "rgba(120,150,170,0.74)", mid: "rgba(98,122,140,0.98)", deep: "rgba(78,98,114,0.98)"},
+  {core: "rgba(142,132,198,0.74)", mid: "rgba(116,106,162,0.98)", deep: "rgba(94,86,132,0.98)"},
+  {core: "rgba(160,180,200,0.74)", mid: "rgba(132,150,168,0.98)", deep: "rgba(106,122,138,0.98)"},
+];
+
+const backgroundVariants = [
+  {
+    overlay: "radial-gradient(circle at 50% 50%, rgba(82,28,140,0.12), rgba(0,0,0,0) 64%)",
+    wavePrimary: "rgba(222,111,255,0.52)",
+    waveSecondary: "rgba(171,108,255,0.28)",
+    waveShadow: "rgba(203,111,255,0.55)",
+  },
+  {
+    overlay: "radial-gradient(circle at 40% 45%, rgba(130,210,235,0.2), rgba(255,255,255,0) 60%)",
+    wavePrimary: "rgba(150,220,240,0.55)",
+    waveSecondary: "rgba(100,170,210,0.32)",
+    waveShadow: "rgba(150,220,240,0.46)",
+  },
+  {
+    overlay: "radial-gradient(circle at 60% 40%, rgba(140,230,210,0.2), rgba(255,255,255,0) 62%)",
+    wavePrimary: "rgba(150,220,210,0.52)",
+    waveSecondary: "rgba(102,170,160,0.32)",
+    waveShadow: "rgba(150,220,210,0.45)",
+  },
+  {
+    overlay: "radial-gradient(circle at 45% 45%, rgba(230,210,140,0.2), rgba(255,255,255,0) 62%)",
+    wavePrimary: "rgba(220,200,140,0.52)",
+    waveSecondary: "rgba(180,160,110,0.32)",
+    waveShadow: "rgba(220,200,140,0.44)",
+  },
+  {
+    overlay: "radial-gradient(circle at 55% 45%, rgba(200,210,220,0.2), rgba(255,255,255,0) 62%)",
+    wavePrimary: "rgba(190,200,210,0.5)",
+    waveSecondary: "rgba(140,150,165,0.32)",
+    waveShadow: "rgba(190,200,210,0.44)",
+  },
+  {
+    overlay: "radial-gradient(circle at 50% 40%, rgba(210,170,140,0.2), rgba(255,255,255,0) 62%)",
+    wavePrimary: "rgba(210,180,150,0.52)",
+    waveSecondary: "rgba(170,140,110,0.32)",
+    waveShadow: "rgba(210,180,150,0.44)",
+  },
+  {
+    overlay: "radial-gradient(circle at 40% 50%, rgba(150,190,220,0.2), rgba(255,255,255,0) 62%)",
+    wavePrimary: "rgba(160,200,220,0.52)",
+    waveSecondary: "rgba(110,150,180,0.32)",
+    waveShadow: "rgba(160,200,220,0.44)",
+  },
+  {
+    overlay: "radial-gradient(circle at 50% 55%, rgba(195,225,160,0.2), rgba(255,255,255,0) 62%)",
+    wavePrimary: "rgba(190,210,160,0.5)",
+    waveSecondary: "rgba(140,170,120,0.32)",
+    waveShadow: "rgba(190,210,160,0.44)",
+  },
+  {
+    overlay: "radial-gradient(circle at 55% 50%, rgba(150,220,210,0.2), rgba(255,255,255,0) 62%)",
+    wavePrimary: "rgba(160,210,200,0.5)",
+    waveSecondary: "rgba(115,165,155,0.32)",
+    waveShadow: "rgba(160,210,200,0.44)",
+  },
+  {
+    overlay: "radial-gradient(circle at 45% 55%, rgba(180,170,220,0.2), rgba(255,255,255,0) 62%)",
+    wavePrimary: "rgba(180,170,210,0.52)",
+    waveSecondary: "rgba(130,120,170,0.32)",
+    waveShadow: "rgba(180,170,210,0.44)",
+  },
+];
+
+const waveVariants = [
+  {
+    lines: [
+      {offset: 0.26, amp: 0.08, phase: 4, speed: 50},
+      {offset: 0.34, amp: 0.19, phase: 16, speed: 34},
+      {offset: 0.42, amp: 0.1, phase: 28, speed: 44},
+    ],
+  },
+  {
+    lines: [
+      {offset: 0.29, amp: 0.22, phase: 10, speed: 32},
+      {offset: 0.36, amp: 0.06, phase: 2, speed: 56},
+      {offset: 0.44, amp: 0.18, phase: 20, speed: 38},
+    ],
+  },
+  {
+    lines: [
+      {offset: 0.31, amp: 0.12, phase: 22, speed: 46},
+      {offset: 0.38, amp: 0.2, phase: 8, speed: 36},
+      {offset: 0.45, amp: 0.09, phase: 14, speed: 52},
+    ],
+  },
+  {
+    lines: [
+      {offset: 0.27, amp: 0.16, phase: 6, speed: 40},
+      {offset: 0.33, amp: 0.07, phase: 18, speed: 58},
+      {offset: 0.39, amp: 0.21, phase: 12, speed: 33},
+      {offset: 0.46, amp: 0.12, phase: 26, speed: 48},
+    ],
+  },
+  {
+    lines: [
+      {offset: 0.3, amp: 0.1, phase: 2, speed: 60},
+      {offset: 0.37, amp: 0.24, phase: 14, speed: 35},
+      {offset: 0.43, amp: 0.08, phase: 24, speed: 54},
+    ],
+  },
+  {
+    lines: [
+      {offset: 0.25, amp: 0.2, phase: 16, speed: 34},
+      {offset: 0.32, amp: 0.09, phase: 6, speed: 50},
+      {offset: 0.4, amp: 0.23, phase: 20, speed: 32},
+      {offset: 0.47, amp: 0.11, phase: 12, speed: 46},
+    ],
+  },
+  {
+    lines: [
+      {offset: 0.28, amp: 0.14, phase: 12, speed: 42},
+      {offset: 0.35, amp: 0.18, phase: 4, speed: 36},
+      {offset: 0.41, amp: 0.06, phase: 26, speed: 60},
+      {offset: 0.48, amp: 0.16, phase: 18, speed: 38},
+    ],
+  },
+  {
+    lines: [
+      {offset: 0.3, amp: 0.05, phase: 28, speed: 64},
+      {offset: 0.36, amp: 0.2, phase: 10, speed: 34},
+      {offset: 0.42, amp: 0.15, phase: 22, speed: 44},
+    ],
+  },
+  {
+    lines: [
+      {offset: 0.26, amp: 0.18, phase: 8, speed: 36},
+      {offset: 0.33, amp: 0.12, phase: 20, speed: 52},
+      {offset: 0.39, amp: 0.24, phase: 14, speed: 32},
+      {offset: 0.45, amp: 0.07, phase: 26, speed: 58},
+    ],
+  },
+  {
+    lines: [
+      {offset: 0.29, amp: 0.09, phase: 4, speed: 56},
+      {offset: 0.35, amp: 0.21, phase: 18, speed: 34},
+      {offset: 0.41, amp: 0.13, phase: 30, speed: 40},
+      {offset: 0.47, amp: 0.19, phase: 10, speed: 36},
+    ],
+  },
+];
+
+const meaningColorSets = [
+  {word: "#f3effa", meaning: "rgba(230,220,245,0.9)", glow: "rgba(175,150,220,0.58)", shadow: "rgba(130,110,180,0.45)"},
+  {word: "#e6f5ff", meaning: "rgba(210,235,250,0.9)", glow: "rgba(135,200,230,0.58)", shadow: "rgba(95,150,190,0.45)"},
+  {word: "#e7f8f4", meaning: "rgba(210,240,232,0.9)", glow: "rgba(135,210,190,0.56)", shadow: "rgba(95,160,145,0.45)"},
+  {word: "#f5f2e1", meaning: "rgba(235,225,195,0.9)", glow: "rgba(210,190,135,0.56)", shadow: "rgba(165,140,95,0.45)"},
+  {word: "#f3f0ea", meaning: "rgba(230,220,210,0.9)", glow: "rgba(200,175,150,0.56)", shadow: "rgba(155,130,105,0.45)"},
+  {word: "#eff4e8", meaning: "rgba(225,235,215,0.9)", glow: "rgba(180,200,150,0.56)", shadow: "rgba(135,150,110,0.45)"},
+  {word: "#e9f1fb", meaning: "rgba(210,225,245,0.9)", glow: "rgba(150,175,215,0.56)", shadow: "rgba(110,135,170,0.45)"},
+  {word: "#eef5ed", meaning: "rgba(220,235,220,0.9)", glow: "rgba(170,195,170,0.56)", shadow: "rgba(125,150,125,0.45)"},
+  {word: "#eef2f5", meaning: "rgba(220,230,235,0.9)", glow: "rgba(165,185,195,0.56)", shadow: "rgba(120,140,150,0.45)"},
+  {word: "#f2f0f6", meaning: "rgba(228,220,235,0.9)", glow: "rgba(180,165,200,0.56)", shadow: "rgba(135,120,155,0.45)"},
+];
 
 const totalFrames = 450;
 const introFrames = 105;
-const cloudFrames = 225;
+const cloudFrames = 195;
 const heroFrames = 150;
 
 const clamp = (value: number, min: number, max: number) =>
@@ -38,6 +207,38 @@ const sceneIn = (frame: number, delay = 0) =>
     fps: 30,
     config: {damping: 16, stiffness: 120, mass: 0.9},
   });
+
+const hashString = (value: string) => {
+  let hash = 2166136261;
+  for (let i = 0; i < value.length; i += 1) {
+    hash ^= value.charCodeAt(i);
+    hash = Math.imul(hash, 16777619);
+  }
+  return hash >>> 0;
+};
+
+const createRng = (seed: number) => {
+  let state = seed >>> 0;
+  return () => {
+    state += 0x6d2b79f5;
+    let t = Math.imul(state ^ (state >>> 15), 1 | state);
+    t ^= t + Math.imul(t ^ (t >>> 7), 61 | t);
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+};
+
+const pickIndex = (seed: number, key: string, length: number) =>
+  hashString(`${seed}-${key}`) % length;
+
+const shuffleWithSeed = (seed: number, items: number[], key: string) => {
+  const shuffled = [...items];
+  const rng = createRng(hashString(`${seed}-${key}`));
+  for (let i = shuffled.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(rng() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+};
 
 const getProgressValue = (frame: number) => {
   const boundedFrame = clamp(frame, 0, totalFrames - 1);
@@ -111,7 +312,14 @@ const IntroField: React.FC<{word: string; frame: number}> = ({word, frame}) => {
   const spin = ramp(frame, [58, 82, 104], [0, 180, 260]);
   const spiralScale = ramp(frame, [58, 82, 104], [1, 1.8, 2.6]);
   const questionPop = sceneIn(frame, 8);
+  const dropStart = 30;
+  const dropEnd = 45;
+  const settleEnd = 60;
+  const dropY = ramp(frame, [dropStart, dropEnd, settleEnd], [-28, 8, 0]);
+  const wobble = Math.sin((frame - settleEnd) / 4) * 2 * ramp(frame, [settleEnd, settleEnd + 20], [1, 0]);
   const titleWidth = width * 0.24;
+  const titleZoom = ramp(frame, [0, 6, 14, 24, 36], [0.72, 1.28, 0.9, 1.12, 1]);
+  const titlePunch = sceneIn(frame, 2);
 
   const articleLines = [
     `Advancements in technology are playing a growing role in ${word}.`,
@@ -192,7 +400,7 @@ const IntroField: React.FC<{word: string; frame: number}> = ({word, frame}) => {
           display: "flex",
           alignItems: "center",
           gap: width * 0.015,
-          transform: `translate(-50%, -50%) translateY(${(1 - reveal) * 26}px) scale(${0.92 + reveal * 0.08})`,
+          transform: `translate(-50%, -50%) translateY(${(1 - reveal) * 26}px) scale(${(0.9 + reveal * 0.1) * titleZoom * (0.92 + titlePunch * 0.08)})`,
         }}
       >
         <div
@@ -217,7 +425,7 @@ const IntroField: React.FC<{word: string; frame: number}> = ({word, frame}) => {
             fontSize: Math.round(height * 0.14),
             lineHeight: 1,
             textShadow: "0 10px 28px rgba(255,0,0,0.25)",
-            transform: `scale(${0.72 + questionPop * 0.28}) rotate(${12 - questionPop * 6}deg)`,
+            transform: `translateY(${dropY + wobble}px) scale(${0.72 + questionPop * 0.28}) rotate(${12 - questionPop * 6 + wobble * 1.5}deg)`,
           }}
         >
           ?
@@ -236,41 +444,94 @@ const wavePath = (width: number, height: number, offsetY: number, amp: number) =
   return `M 0 ${startY} C ${width * 0.18} ${c1y}, ${width * 0.34} ${c2y}, ${width * 0.52} ${startY} S ${width * 0.82} ${c1y}, ${width} ${endY}`;
 };
 
-const cloudWords = [
-  {text: "SCIENCE", x: 0.18, y: 0.34, size: 0.064},
-  {text: "MENTAL", x: 0.11, y: 0.24, size: 0.05},
-  {text: "SPORT", x: 0.34, y: 0.28, size: 0.053},
-  {text: "WELLNESS", x: 0.25, y: 0.56, size: 0.062},
-  {text: "POWER", x: 0.22, y: 0.67, size: 0.045},
-  {text: "SELF-CARE", x: 0.52, y: 0.22, size: 0.044},
-  {text: "BALANCE", x: 0.77, y: 0.13, size: 0.057},
-  {text: "LIFESTYLE", x: 0.83, y: 0.43, size: 0.051},
-  {text: "STRENGTH", x: 0.83, y: 0.56, size: 0.05},
-  {text: "HAPPINESS", x: 0.73, y: 0.26, size: 0.04},
-  {text: "VITALITY", x: 0.62, y: 0.19, size: 0.041},
-  {text: "ENERGY", x: 0.6, y: 0.62, size: 0.041},
-  {text: "RELAXATION", x: 0.77, y: 0.9, size: 0.043},
-  {text: "TRAINING", x: 0.5, y: 0.46, size: 0.04},
-  {text: "POWER", x: 0.56, y: 0.59, size: 0.048},
-  {text: "SPORT", x: 0.63, y: 0.35, size: 0.038},
-  {text: "WELLNESS", x: 0.43, y: 0.18, size: 0.044},
-  {text: "SELF-CARE", x: 0.54, y: 0.76, size: 0.049},
-  {text: "MENTAL", x: 0.89, y: 0.78, size: 0.046},
-  {text: "SCIENCE", x: 0.96, y: 0.14, size: 0.036},
-];
-
-const CloudScene: React.FC<{frame: number}> = ({frame}) => {
+const CloudScene: React.FC<{
+  frame: number;
+  word: string;
+  otherMeanings: string[];
+  renderSeed: number;
+}> = ({
+  frame,
+  word,
+  otherMeanings,
+  renderSeed,
+}) => {
   const {width, height} = useVideoConfig();
+  const maxItems = 9;
+  const trimmedMeanings = otherMeanings.slice(0, maxItems);
+  const colorSet = backgroundColorSets[
+    pickIndex(renderSeed, `bg-${word}-${trimmedMeanings.join("|")}`, backgroundColorSets.length)
+  ];
+  const variant = backgroundVariants[
+    pickIndex(renderSeed, `variant-${word}-${trimmedMeanings.join("|")}`, backgroundVariants.length)
+  ];
+  const waveVariant = waveVariants[
+    pickIndex(renderSeed, `wave-${word}-${trimmedMeanings.join("|")}`, waveVariants.length)
+  ];
+  const meaningPalette = meaningColorSets[
+    pickIndex(renderSeed, `meaning-${word}-${trimmedMeanings.join("|")}`, meaningColorSets.length)
+  ];
   const reveal = sceneIn(frame);
-  const clusterOpacity = ramp(frame, [0, 30, 80], [1, 1, 0]);
-  const disperse = ramp(frame, [0, 90], [0, 1]);
+  const count = trimmedMeanings.length;
+  const wordFont = Math.round(width * 0.034);
+  const meaningFont = Math.round(width * 0.028);
+  const textWidth = width * 0.24;
+  const gridPadding = 40;
+  const progressBarHeight = Math.round(height * 0.09);
+  const bounds = {
+    left: gridPadding,
+    right: width - gridPadding,
+    top: gridPadding,
+    bottom: height - gridPadding - progressBarHeight,
+  };
+  const pickLayout = () => {
+    const layoutMap: Record<number, {columns: number; rows: number; placements: number[]}> = {
+      0: {columns: 3, rows: 3, placements: []},
+      1: {columns: 3, rows: 3, placements: [4]},
+      2: {columns: 2, rows: 1, placements: [0, 1]},
+      3: {columns: 3, rows: 3, placements: [3, 4, 5]},
+      4: {columns: 2, rows: 2, placements: [0, 1, 2, 3]},
+      5: {columns: 3, rows: 3, placements: [0, 2, 4, 6, 8]},
+      6: {columns: 3, rows: 2, placements: [0, 1, 2, 3, 4, 5]},
+      7: {columns: 3, rows: 3, placements: [0, 2, 3, 4, 5, 6, 8]},
+      8: {columns: 3, rows: 3, placements: [0, 1, 2, 3, 4, 5, 6, 8]},
+      9: {columns: 3, rows: 3, placements: [0, 1, 2, 3, 4, 5, 6, 7, 8]},
+    };
+
+    return layoutMap[count] ?? layoutMap[9];
+  };
+
+  const layout = pickLayout();
+  const columns = layout.columns;
+  const rows = layout.rows;
+  const cellWidth = (bounds.right - bounds.left) / columns;
+  const cellHeight = (bounds.bottom - bounds.top) / rows;
+  const placementOrder = shuffleWithSeed(
+    renderSeed,
+    layout.placements,
+    `cells-${word}-${trimmedMeanings.join("|")}`,
+  );
+
+  const swaySeeds = trimmedMeanings.map((meaning, index) => {
+    const seed = hashString(`${renderSeed}-sway-${meaning}-${index}`);
+    return (seed / 4294967296) * Math.PI * 2;
+  });
+  const jitteredPositions = trimmedMeanings.map((_, index) => {
+    const cellIndex = placementOrder[index] ?? 4;
+    const row = Math.floor(cellIndex / columns);
+    const col = cellIndex % columns;
+    const cellLeft = bounds.left + col * cellWidth;
+    const cellTop = bounds.top + row * cellHeight;
+    const x = cellLeft + cellWidth / 2;
+    const y = cellTop + cellHeight / 2;
+    return {left: x, top: y};
+  });
 
   return (
     <AbsoluteFill
       style={{
         overflow: "hidden",
         background:
-          "radial-gradient(circle at 50% 50%, rgba(34,14,62,0.72), rgba(12,3,28,1) 58%, rgba(6,0,18,1) 100%)",
+          `radial-gradient(circle at 50% 50%, ${colorSet.core}, ${colorSet.mid} 58%, ${colorSet.deep} 100%)`,
       }}
     >
       <div
@@ -278,8 +539,7 @@ const CloudScene: React.FC<{frame: number}> = ({frame}) => {
           position: "absolute",
           inset: 0,
           opacity: 0.95,
-          background:
-            "radial-gradient(circle at 50% 50%, rgba(82,28,140,0.12), rgba(0,0,0,0) 64%)",
+          background: variant.overlay,
         }}
       />
 
@@ -292,77 +552,76 @@ const CloudScene: React.FC<{frame: number}> = ({frame}) => {
           opacity: 0.86,
         }}
       >
-        {[0.34, 0.36, 0.39].map((offset, index) => (
-          <path
-            key={offset}
-            d={wavePath(width, height, offset + Math.sin((frame + index * 8) / 40) * 0.01, height * (0.13 + index * 0.03))}
-            fill="none"
-            stroke={index === 1 ? "rgba(222,111,255,0.52)" : "rgba(171,108,255,0.28)"}
-            strokeWidth={index === 1 ? 2.4 : 1.6}
-            style={{
-              filter: "drop-shadow(0 0 10px rgba(203,111,255,0.55))",
-            }}
-          />
-        ))}
+        {waveVariant.lines.map((line, index) => {
+          const isPrimary = index === Math.floor(waveVariant.lines.length / 2);
+          return (
+            <path
+              key={`${line.offset}-${line.amp}-${index}`}
+              d={wavePath(
+                width,
+                height,
+                line.offset + Math.sin((frame + line.phase) / line.speed) * 0.01,
+                height * line.amp,
+              )}
+              fill="none"
+              stroke={isPrimary ? variant.wavePrimary : variant.waveSecondary}
+              strokeWidth={isPrimary ? 2.4 : 1.6}
+              style={{
+                filter: `drop-shadow(0 0 10px ${variant.waveShadow})`,
+              }}
+            />
+          );
+        })}
       </svg>
 
-      {cloudWords.map((item, index) => {
-        const driftX = Math.sin(frame / 30 + index * 0.9) * width * 0.01;
-        const driftY = Math.cos(frame / 35 + index * 0.7) * height * 0.012;
-        const fontSize = Math.round(width * item.size);
-        const opacity = 0.48 + ((index % 4) / 12);
+      {trimmedMeanings.map((meaning, index) => {
+        const position = jitteredPositions[index];
+        const appearDelay = 10 * index;
+        const opacity = ramp(frame - appearDelay, [0, 20, 50], [0, 0.7, 1]);
+        const scale = ramp(frame - appearDelay, [0, 24, 56], [0.7, 1.05, 1]);
+        const swayStrength = ramp(frame - appearDelay, [60, 90], [0, 1]);
+        const sway = Math.sin((frame - appearDelay) / 20 + swaySeeds[index]) * 3 * swayStrength;
 
         return (
           <div
-            key={`${item.text}-${index}`}
+            key={`${meaning}-${index}`}
             style={{
               position: "absolute",
-              left: item.x * width + driftX - fontSize * 0.5,
-              top: item.y * height + driftY - fontSize * 0.5,
-              color: "#ffe9ff",
-              fontFamily: displayFont,
-              fontSize,
-              lineHeight: 1,
+              left: position.left - textWidth * 0.5,
+              top: position.top - height * 0.035,
+              width: textWidth,
               opacity: opacity * reveal,
-              textShadow:
-                "0 0 10px rgba(255,126,255,0.56), 0 0 22px rgba(180,76,255,0.36)",
-              transform: `scale(${0.96 + Math.sin(frame / 18 + index) * 0.03})`,
+              textAlign: "center",
+              transform: `translateY(${sway}px) scale(${scale})`,
             }}
           >
-            {item.text}
+            <div
+              style={{
+                fontFamily: bodyFont,
+                fontSize: wordFont,
+                fontWeight: 700,
+                color: meaningPalette.word,
+                textShadow:
+                  `0 0 10px ${meaningPalette.glow}, 0 0 22px ${meaningPalette.shadow}`,
+                lineHeight: 1.05,
+              }}
+            >
+              {word}
+            </div>
+            <div
+              style={{
+                marginTop: height * 0.01,
+                fontFamily: bodyFont,
+                fontSize: meaningFont,
+                color: meaningPalette.meaning,
+                lineHeight: 1.1,
+              }}
+            >
+              {`\\${meaning}\\`}
+            </div>
           </div>
         );
       })}
-
-      <div
-        style={{
-          position: "absolute",
-          left: width * 0.12,
-          top: height * 0.16,
-          opacity: clusterOpacity,
-          transform: `translate(${(1 - disperse) * width * 0.18}px, ${(1 - disperse) * -height * 0.06}px) scale(${1.1 - disperse * 0.1})`,
-          filter: `blur(${(1 - disperse) * 2.4}px)`,
-        }}
-      >
-        {["ENERGY", "POWER", "MIND", "TRAINING", "SELF-CARE"].map((label, index) => (
-          <div
-            key={label}
-            style={{
-              position: "absolute",
-              left: (index % 2) * width * 0.06,
-              top: index * height * 0.042,
-              color: "#fff8ff",
-              fontFamily: displayFont,
-              fontSize: Math.round(width * (index === 1 ? 0.082 : 0.066)),
-              lineHeight: 1,
-              textShadow:
-                "0 0 12px rgba(255,128,255,0.66), 0 0 28px rgba(194,86,255,0.4)",
-            }}
-          >
-            {label}
-          </div>
-        ))}
-      </div>
 
       <ProgressBar frame={introFrames + frame} />
     </AbsoluteFill>
@@ -501,7 +760,7 @@ const HeroScene: React.FC<{item: WordProps; frame: number}> = ({item, frame}) =>
             fontSize: Math.round(height * 0.058),
           }}
         >
-          Vi du
+          Ví dụ
         </div>
         <div
           style={{
@@ -547,6 +806,11 @@ const HeroScene: React.FC<{item: WordProps; frame: number}> = ({item, frame}) =>
 export const Word: React.FC<WordProps> = (item) => {
   const frame = useCurrentFrame();
   const boundedFrame = clamp(frame, 0, totalFrames - 1);
+  const renderSeed =
+    item.renderSeed ??
+    hashString(
+      `${item.word}|${item.phonetic}|${item.meaning}|${item.exampleEn}|${item.exampleVi}|${(item["other meaning"] ?? []).join("|")}`,
+    );
 
   const introOpacity = ramp(boundedFrame, [0, introFrames - 12, introFrames + 8], [1, 1, 0]);
   const cloudStart = introFrames - 8;
@@ -573,7 +837,12 @@ export const Word: React.FC<WordProps> = (item) => {
           opacity: cloudOpacity,
         }}
       >
-        <CloudScene frame={Math.max(0, boundedFrame - cloudStart)} />
+        <CloudScene
+          frame={Math.max(0, boundedFrame - cloudStart)}
+          word={item.word}
+          otherMeanings={item["other meaning"] ?? []}
+          renderSeed={renderSeed}
+        />
       </div>
 
       <div

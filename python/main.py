@@ -165,8 +165,12 @@ def find_matching_audio(project_root: Path, asset_path: Path, audio_file: str | 
 
 def prepare_audio(project_root: Path, asset_data: dict, remotion_dir: Path) -> str | None:
     audio_file = asset_data.get("audioFile")
-    audio_file_value = audio_file if isinstance(audio_file, str) else None
-    source_audio = find_matching_audio(project_root, Path(audio_file_value or ""), audio_file_value)
+    if isinstance(audio_file, str) and audio_file.strip():
+        audio_file_value = audio_file.strip()
+    else:
+        word = asset_data.get("word", "")
+        audio_file_value = f"{_sanitize_slug(str(word))}.mp3"
+    source_audio = find_matching_audio(project_root, Path(audio_file_value), audio_file_value)
     if source_audio is None:
         return None
 

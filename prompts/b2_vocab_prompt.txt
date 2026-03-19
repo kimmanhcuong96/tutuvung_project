@@ -3,8 +3,9 @@ exampleEn have to text length small than 10. All words must be distinct and not 
 For each item provide:
 1) word (lowercase)
 2) phonetic (IPA)
-3) meaning (Vietnamese)
+3) meaning (Vietnamese, 1 meaning only)
 4) exampleEn (natural English sentence)
 5) exampleVi (Vietnamese translation of the English example)
+6) other meaning (as much as possible, limit is 9, return in an array of string)
 
 Return JSON only, no explanations.
