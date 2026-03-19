@@ -18,20 +18,20 @@ def _require_env(name: str) -> str:
 
 def _ffmpeg_paths(project_root: Path) -> tuple[Path, Path]:
     ffmpeg = (
-        project_root
-        / "remotion"
-        / "node_modules"
-        / "@remotion"
-        / "compositor-win32-x64-msvc"
-        / "ffmpeg.exe"
+            project_root
+            / "remotion"
+            / "node_modules"
+            / "@remotion"
+            / "compositor-win32-x64-msvc"
+            / "ffmpeg.exe"
     )
     ffprobe = (
-        project_root
-        / "remotion"
-        / "node_modules"
-        / "@remotion"
-        / "compositor-win32-x64-msvc"
-        / "ffprobe.exe"
+            project_root
+            / "remotion"
+            / "node_modules"
+            / "@remotion"
+            / "compositor-win32-x64-msvc"
+            / "ffprobe.exe"
     )
     if not ffmpeg.exists() or not ffprobe.exists():
         raise FileNotFoundError("ffmpeg/ffprobe not found in remotion node_modules.")
@@ -62,12 +62,12 @@ def _duration_seconds(ffprobe: Path, audio_path: Path) -> float:
 
 
 async def _edge_tts_save(
-    text: str,
-    output_path: Path,
-    voice: str,
-    rate: str,
-    pitch: str,
-    volume: str,
+        text: str,
+        output_path: Path,
+        voice: str,
+        rate: str,
+        pitch: str,
+        volume: str,
 ) -> None:
     try:
         import edge_tts  # type: ignore
@@ -85,12 +85,12 @@ async def _edge_tts_save(
 
 
 def edge_tts_to_file(
-    text: str,
-    output_path: Path,
-    voice: str,
-    rate: str | None = None,
-    pitch: str | None = None,
-    volume: str | None = None,
+        text: str,
+        output_path: Path,
+        voice: str,
+        rate: str | None = None,
+        pitch: str | None = None,
+        volume: str | None = None,
 ) -> None:
     rate_value = rate or "+0%"
     pitch_value = pitch or "+0Hz"
@@ -107,18 +107,55 @@ def edge_tts_to_file(
     )
 
 
-def build_timed_tts_audio(
-    asset_data: dict,
+def _tts_engine() -> str:
+    return (os.getenv("TTS_ENGINE") or "edge").strip().lower()
+
+
+def _tts_to_file(
+    text: str,
     output_path: Path,
-    project_root: Path,
-    word_fast_end: float = 2.5,
-    word_slow_start: float = 3.0,
-    word_slow_end: float = 8.5,
-    word_emph_end: float = 11.0,
-    example_start: float = 11.0,
-    example_end: float = 14.5,
-    total_duration: float = 15.0,
-    repeat_gap: float = 0.2,
+    voice: str,
+    rate: str | None = None,
+    pitch: str | None = None,
+    volume: str | None = None,
+) -> None:
+    engine = _tts_engine()
+    if engine == "azure":
+        from azure_tts_audio import azure_tts_to_file
+
+        azure_tts_to_file(
+            text=text,
+            output_path=output_path,
+            voice=voice,
+            rate=rate,
+            pitch=pitch,
+            volume=volume,
+        )
+        return
+    if engine != "edge":
+        raise EdgeTTSError(f"Unsupported TTS_ENGINE value: {engine}")
+    edge_tts_to_file(
+        text=text,
+        output_path=output_path,
+        voice=voice,
+        rate=rate,
+        pitch=pitch,
+        volume=volume,
+    )
+
+
+def build_timed_tts_audio(
+        asset_data: dict,
+        output_path: Path,
+        project_root: Path,
+        word_fast_end: float = 2.5,
+        word_slow_start: float = 3.0,
+        word_slow_end: float = 8.5,
+        word_emph_end: float = 11.0,
+        example_start: float = 11.0,
+        example_end: float = 14.5,
+        total_duration: float = 15.0,
+        repeat_gap: float = 0.2,
 ) -> None:
     word = asset_data.get("word", "").strip()
     example = asset_data.get("exampleEn", "").strip()
@@ -129,26 +166,45 @@ def build_timed_tts_audio(
 
     print(f"TTS prompt -> word: \"{word}\" | example: \"{example}\"")
 
-    voice = _require_env("EDGE_TTS_VOICE")
-    rate = os.getenv("EDGE_TTS_RATE")
-    rate_word_fast = os.getenv("EDGE_TTS_RATE_WORD_FAST") or rate
-    rate_word_slow = os.getenv("EDGE_TTS_RATE_WORD_SLOW") or rate
-    rate_word_emph = os.getenv("EDGE_TTS_RATE_WORD_EMPH") or rate
-    rate_word_emph_second = os.getenv("EDGE_TTS_RATE_WORD_EMPH_SECOND") or rate_word_emph
-    rate_example = os.getenv("EDGE_TTS_RATE_EXAMPLE") or rate
-    pitch = os.getenv("EDGE_TTS_PITCH")
-    pitch_word_emph = os.getenv("EDGE_TTS_PITCH_WORD_EMPH") or pitch
-    pitch_word_emph_second = os.getenv("EDGE_TTS_PITCH_WORD_EMPH_SECOND") or pitch_word_emph
-    volume = os.getenv("EDGE_TTS_VOLUME")
-    volume_word_emph = os.getenv("EDGE_TTS_VOLUME_WORD_EMPH") or volume
-    volume_word_emph_second = os.getenv("EDGE_TTS_VOLUME_WORD_EMPH_SECOND") or volume_word_emph
-    emph_gain = os.getenv("EDGE_TTS_WORD_EMPH_GAIN")
+    engine = _tts_engine()
+    if engine == "azure":
+        voice = _require_env("AZURE_TTS_VOICE")
+        rate = os.getenv("AZURE_TTS_RATE")
+        rate_word_fast = os.getenv("AZURE_TTS_RATE_WORD_FAST") or rate
+        rate_word_slow = os.getenv("AZURE_TTS_RATE_WORD_SLOW") or rate
+        rate_word_emph = os.getenv("AZURE_TTS_RATE_WORD_EMPH") or rate
+        rate_word_emph_second = os.getenv("AZURE_TTS_RATE_WORD_EMPH_SECOND") or rate_word_emph
+        rate_example = os.getenv("AZURE_TTS_RATE_EXAMPLE") or rate
+        pitch = os.getenv("AZURE_TTS_PITCH")
+        pitch_word_emph = os.getenv("AZURE_TTS_PITCH_WORD_EMPH") or pitch
+        pitch_word_emph_second = os.getenv("AZURE_TTS_PITCH_WORD_EMPH_SECOND") or pitch_word_emph
+        volume = os.getenv("AZURE_TTS_VOLUME")
+        volume_word_emph = os.getenv("AZURE_TTS_VOLUME_WORD_EMPH") or volume
+        volume_word_emph_second = os.getenv("AZURE_TTS_VOLUME_WORD_EMPH_SECOND") or volume_word_emph
+        emph_gain = os.getenv("AZURE_TTS_WORD_EMPH_GAIN")
+    elif engine == "edge":
+        voice = _require_env("EDGE_TTS_VOICE")
+        rate = os.getenv("EDGE_TTS_RATE")
+        rate_word_fast = os.getenv("EDGE_TTS_RATE_WORD_FAST") or rate
+        rate_word_slow = os.getenv("EDGE_TTS_RATE_WORD_SLOW") or rate
+        rate_word_emph = os.getenv("EDGE_TTS_RATE_WORD_EMPH") or rate
+        rate_word_emph_second = os.getenv("EDGE_TTS_RATE_WORD_EMPH_SECOND") or rate_word_emph
+        rate_example = os.getenv("EDGE_TTS_RATE_EXAMPLE") or rate
+        pitch = os.getenv("EDGE_TTS_PITCH")
+        pitch_word_emph = os.getenv("EDGE_TTS_PITCH_WORD_EMPH") or pitch
+        pitch_word_emph_second = os.getenv("EDGE_TTS_PITCH_WORD_EMPH_SECOND") or pitch_word_emph
+        volume = os.getenv("EDGE_TTS_VOLUME")
+        volume_word_emph = os.getenv("EDGE_TTS_VOLUME_WORD_EMPH") or volume
+        volume_word_emph_second = os.getenv("EDGE_TTS_VOLUME_WORD_EMPH_SECOND") or volume_word_emph
+        emph_gain = os.getenv("EDGE_TTS_WORD_EMPH_GAIN")
+    else:
+        raise EdgeTTSError(f"Unsupported TTS_ENGINE value: {engine}")
     emph_gain = float(emph_gain) if emph_gain else None
     base_sound = (
-        project_root
-        / "assets"
-        / "ref_sound"
-        / "base_sound.mp3"
+            project_root
+            / "assets"
+            / "ref_sound"
+            / "base_sound.mp3"
     )
 
     ffmpeg, ffprobe = _ffmpeg_paths(project_root)
@@ -174,13 +230,13 @@ def build_timed_tts_audio(
         tts_only = tmp / "tts_only.mp3"
 
         def render_word_segment(
-            target_path: Path,
-            duration: float,
-            rate_value: str | None,
-            pitch_value: str | None,
-            volume_value: str | None,
-            separator: str = ". ",
-            prompt: str | None = None,
+                target_path: Path,
+                duration: float,
+                rate_value: str | None,
+                pitch_value: str | None,
+                volume_value: str | None,
+                separator: str = ". ",
+                prompt: str | None = None,
         ) -> None:
             repeats = 6
             while True:
@@ -188,7 +244,7 @@ def build_timed_tts_audio(
                     word_prompt = (separator.join([word] * repeats)).strip()
                 else:
                     word_prompt = prompt
-                edge_tts_to_file(
+                _tts_to_file(
                     word_prompt,
                     target_path,
                     voice=voice,
@@ -294,7 +350,7 @@ def build_timed_tts_audio(
             for step in range(0, 9):
                 rate_value = f"{base_rate + step * 10:+d}%"
                 rate_value_second = f"{base_rate_second + step * 10:+d}%"
-                edge_tts_to_file(
+                _tts_to_file(
                     f"{word}.",
                     word_emph_raw,
                     voice=voice,
@@ -302,7 +358,7 @@ def build_timed_tts_audio(
                     pitch=pitch_word_emph,
                     volume=volume_word_emph,
                 )
-                edge_tts_to_file(
+                _tts_to_file(
                     f"{word}.",
                     word_emph_second_raw,
                     voice=voice,
@@ -347,6 +403,7 @@ def build_timed_tts_audio(
         slow_duration = max(0.0, word_slow_end - word_slow_start)
         emph_duration = max(0.0, word_emph_end - word_slow_end)
 
+        # create first 2.5 second mp3
         render_word_segment(word_fast_raw, fast_duration, rate_word_fast, pitch, volume, separator=" - ")
         trim_segment(word_fast_raw, word_fast_trimmed, fast_duration, gain=1.15)
         ensure_duration(word_fast_trimmed, fast_duration)
@@ -490,7 +547,7 @@ def build_timed_tts_audio(
         )
         tail_tmp.replace(word_emph_padded)
         ensure_duration(word_emph_padded, emph_duration)
-        edge_tts_to_file(example, example_raw, voice=voice, rate=rate_example, pitch=pitch, volume=volume)
+        _tts_to_file(example, example_raw, voice=voice, rate=rate_example, pitch=pitch, volume=volume)
 
         _run(
             [

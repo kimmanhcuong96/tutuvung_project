@@ -1,0 +1,10 @@
+Generate 2 English vocabulary words randomly at CEFR C1 level for Vietnamese learners. only 2 word results.
+exampleEn have to text length small than 10. All words must be distinct and not semantically similar.
+For each item provide:
+1) word (lowercase)
+2) phonetic (IPA)
+3) meaning (Vietnamese)
+4) exampleEn (natural English sentence)
+5) exampleVi (Vietnamese translation of the English example)
+
+Return JSON only, no explanations.
