@@ -1,6 +1,7 @@
 import argparse
 import json
 import os
+import random
 import shutil
 import subprocess
 from pathlib import Path
@@ -246,6 +247,7 @@ def main() -> None:
         sound_dir.mkdir(parents=True, exist_ok=True)
 
         for data in json_assets:
+            data["renderSeed"] = random.randint(0, 1_000_000_000)
             tts_output = tts_output_path(data, sound_dir)
             build_timed_tts_audio(
                 asset_data=data,

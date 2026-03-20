@@ -13,8 +13,14 @@ export type WordProps = {
   meaning: string;
   exampleEn: string;
   exampleVi: string;
-  "other meaning"?: string[];
+  other_meaning?: OtherMeaningItem[];
   renderSeed?: number;
+};
+
+type OtherMeaningItem = {
+  word: string;
+  phonetic: string;
+  meaning: string;
 };
 
 const displayFont = '"Segoe UI", Arial, sans-serif';
@@ -447,7 +453,7 @@ const wavePath = (width: number, height: number, offsetY: number, amp: number) =
 const CloudScene: React.FC<{
   frame: number;
   word: string;
-  otherMeanings: string[];
+  otherMeanings: OtherMeaningItem[];
   renderSeed: number;
 }> = ({
   frame,
@@ -458,22 +464,26 @@ const CloudScene: React.FC<{
   const {width, height} = useVideoConfig();
   const maxItems = 9;
   const trimmedMeanings = otherMeanings.slice(0, maxItems);
+  const meaningKey = (entry: OtherMeaningItem) =>
+    `${entry.word}|${entry.phonetic}|${entry.meaning}`;
+  const meaningKeyList = trimmedMeanings.map(meaningKey);
   const colorSet = backgroundColorSets[
-    pickIndex(renderSeed, `bg-${word}-${trimmedMeanings.join("|")}`, backgroundColorSets.length)
+    pickIndex(renderSeed, `bg-${word}-${meaningKeyList.join("|")}`, backgroundColorSets.length)
   ];
   const variant = backgroundVariants[
-    pickIndex(renderSeed, `variant-${word}-${trimmedMeanings.join("|")}`, backgroundVariants.length)
+    pickIndex(renderSeed, `variant-${word}-${meaningKeyList.join("|")}`, backgroundVariants.length)
   ];
   const waveVariant = waveVariants[
-    pickIndex(renderSeed, `wave-${word}-${trimmedMeanings.join("|")}`, waveVariants.length)
+    pickIndex(renderSeed, `wave-${word}-${meaningKeyList.join("|")}`, waveVariants.length)
   ];
   const meaningPalette = meaningColorSets[
-    pickIndex(renderSeed, `meaning-${word}-${trimmedMeanings.join("|")}`, meaningColorSets.length)
+    pickIndex(renderSeed, `meaning-${word}-${meaningKeyList.join("|")}`, meaningColorSets.length)
   ];
   const reveal = sceneIn(frame);
   const count = trimmedMeanings.length;
   const wordFont = Math.round(width * 0.034);
-  const meaningFont = Math.round(width * 0.028);
+  const phoneticFont = Math.round(width * 0.018);
+  const meaningFont = Math.round(width * 0.022);
   const textWidth = width * 0.24;
   const gridPadding = 40;
   const progressBarHeight = Math.round(height * 0.09);
@@ -508,11 +518,11 @@ const CloudScene: React.FC<{
   const placementOrder = shuffleWithSeed(
     renderSeed,
     layout.placements,
-    `cells-${word}-${trimmedMeanings.join("|")}`,
+    `cells-${word}-${meaningKeyList.join("|")}`,
   );
 
   const swaySeeds = trimmedMeanings.map((meaning, index) => {
-    const seed = hashString(`${renderSeed}-sway-${meaning}-${index}`);
+    const seed = hashString(`${renderSeed}-sway-${meaningKey(meaning)}-${index}`);
     return (seed / 4294967296) * Math.PI * 2;
   });
   const jitteredPositions = trimmedMeanings.map((_, index) => {
@@ -575,6 +585,7 @@ const CloudScene: React.FC<{
       </svg>
 
       {trimmedMeanings.map((meaning, index) => {
+        const entryKey = meaningKey(meaning);
         const position = jitteredPositions[index];
         const appearDelay = 10 * index;
         const opacity = ramp(frame - appearDelay, [0, 20, 50], [0, 0.7, 1]);
@@ -584,7 +595,7 @@ const CloudScene: React.FC<{
 
         return (
           <div
-            key={`${meaning}-${index}`}
+            key={`${entryKey}-${index}`}
             style={{
               position: "absolute",
               left: position.left - textWidth * 0.5,
@@ -606,18 +617,31 @@ const CloudScene: React.FC<{
                 lineHeight: 1.05,
               }}
             >
-              {word}
+              {meaning.word}
             </div>
             <div
               style={{
-                marginTop: height * 0.01,
+                marginTop: height * 0.008,
+                fontFamily: bodyFont,
+                fontSize: phoneticFont,
+                fontStyle: "italic",
+                fontWeight: 600,
+                color: meaningPalette.meaning,
+                lineHeight: 1.1,
+              }}
+            >
+              {meaning.phonetic}
+            </div>
+            <div
+              style={{
+                marginTop: height * 0.008,
                 fontFamily: bodyFont,
                 fontSize: meaningFont,
                 color: meaningPalette.meaning,
                 lineHeight: 1.1,
               }}
             >
-              {`\\${meaning}\\`}
+              {meaning.meaning}
             </div>
           </div>
         );
@@ -806,10 +830,13 @@ const HeroScene: React.FC<{item: WordProps; frame: number}> = ({item, frame}) =>
 export const Word: React.FC<WordProps> = (item) => {
   const frame = useCurrentFrame();
   const boundedFrame = clamp(frame, 0, totalFrames - 1);
+  const otherMeaningKey = (entry: OtherMeaningItem) =>
+    `${entry.word}|${entry.phonetic}|${entry.meaning}`;
+  const otherMeanings = item.other_meaning ?? [];
   const renderSeed =
     item.renderSeed ??
     hashString(
-      `${item.word}|${item.phonetic}|${item.meaning}|${item.exampleEn}|${item.exampleVi}|${(item["other meaning"] ?? []).join("|")}`,
+      `${item.word}|${item.phonetic}|${item.meaning}|${item.exampleEn}|${item.exampleVi}|${otherMeanings.map(otherMeaningKey).join("|")}`,
     );
 
   const introOpacity = ramp(boundedFrame, [0, introFrames - 12, introFrames + 8], [1, 1, 0]);
@@ -840,7 +867,7 @@ export const Word: React.FC<WordProps> = (item) => {
         <CloudScene
           frame={Math.max(0, boundedFrame - cloudStart)}
           word={item.word}
-          otherMeanings={item["other meaning"] ?? []}
+          otherMeanings={otherMeanings}
           renderSeed={renderSeed}
         />
       </div>

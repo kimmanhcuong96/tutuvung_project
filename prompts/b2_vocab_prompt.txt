@@ -1,11 +1,34 @@
-Generate 2 English vocabulary words randomly at CEFR C1 level for Vietnamese learners. only 2 word results.
-exampleEn have to text length small than 10. All words must be distinct and not semantically similar.
+Generate 2 English vocabulary words randomly at CEFR C1 level for Vietnamese learners. Only 2 word results. All words must be distinct and not semantically similar.
+
 For each item provide:
 1) word (lowercase)
 2) phonetic (IPA)
 3) meaning (Vietnamese, 1 meaning only)
-4) exampleEn (natural English sentence)
+4) exampleEn (natural English sentence, less than 10 words)
 5) exampleVi (Vietnamese translation of the English example)
-6) other meaning (as much as possible, limit is 9, return in an array of string)
+6) other_meaning (array of objects)
+
+For "other_meaning":
+- Each element must be an object with 3 fields:
+  + word: same as the main "word" of that item
+  + phonetic: IPA corresponding EXACTLY to that specific part of speech and meaning (must vary if pronunciation differs by usage)
+  + meaning: Vietnamese meaning with format "(pos) meaning", e.g. "(v) đi học"
+
+- MUST include 5–9 meanings (prefer 8–9 if possible)
+
+- MUST maximize part-of-speech diversity:
+  + Include as many different POS as the word allows (noun, verb, adjective, adverb, etc.)
+  + If possible, include at least 3–4 different parts of speech
+  + Prioritize words that naturally have multiple POS forms
+
+- MUST reflect phonetic variation:
+  + If pronunciation changes between noun/verb/adjective forms, you MUST provide the correct IPA for each
+  + Avoid reusing identical phonetic blindly across all items
+
+- If the word has limited POS variation:
+  + Use clearly distinct senses/usages
+  + Still try to include any possible grammatical variation (e.g. countable noun vs uncountable noun nuance)
+
+- Avoid repeating meanings with only slight wording differences
 
 Return JSON only, no explanations.

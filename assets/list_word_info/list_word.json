@@ -1,38 +1,51 @@
 [
   {
-    "word": "resilient",
-    "phonetic": "/rɪˈzɪliənt/",
-    "meaning": "kiên cường",
-    "exampleEn": "She is very resilient.",
-    "exampleVi": "Cô ấy rất kiên cường.",
-    "other meaning": [
-      "bền bỉ",
-      "chịu đựng tốt",
-      "dẻo dai",
-      "khả năng phục hồi nhanh",
-      "mạnh mẽ",
-      "không dễ gục ngã",
-      "cứng cỏi",
-      "linh hoạt thích nghi",
-      "vững vàng"
-    ]
-  },
-  {
-    "word": "ambiguous",
-    "phonetic": "/æmˈbɪɡjuəs/",
-    "meaning": "mơ hồ",
-    "exampleEn": "His answer was ambiguous.",
-    "exampleVi": "Câu trả lời của anh ấy rất mơ hồ.",
-    "other meaning": [
-      "không rõ ràng",
-      "đa nghĩa",
-      "khó hiểu",
-      "lấp lửng",
-      "không xác định",
-      "mập mờ",
-      "gây hiểu nhầm",
-      "không dứt khoát",
-      "khó giải thích"
+    "word": "record",
+    "phonetic": "/rɪˈkɔːd/",
+    "meaning": "ghi lại",
+    "exampleEn": "They record every meeting.",
+    "exampleVi": "Họ ghi lại mọi cuộc họp.",
+    "other_meaning": [
+      {
+        "word": "record",
+        "phonetic": "/ˈrekɔːd/",
+        "meaning": "(n) hồ sơ"
+      },
+      {
+        "word": "record",
+        "phonetic": "/ˈrekɔːd/",
+        "meaning": "(n) kỷ lục"
+      },
+      {
+        "word": "record",
+        "phonetic": "/ˈrekɔːd/",
+        "meaning": "(n) bản ghi âm"
+      },
+      {
+        "word": "record",
+        "phonetic": "/rɪˈkɔːd/",
+        "meaning": "(v) ghi âm"
+      },
+      {
+        "word": "record",
+        "phonetic": "/rɪˈkɔːd/",
+        "meaning": "(v) ghi chép"
+      },
+      {
+        "word": "record",
+        "phonetic": "/rɪˈkɔːd/",
+        "meaning": "(v) đăng ký chính thức"
+      },
+      {
+        "word": "record",
+        "phonetic": "/ˈrekɔːd/",
+        "meaning": "(adj) kỷ lục"
+      },
+      {
+        "word": "record",
+        "phonetic": "/ˈrekɔːd/",
+        "meaning": "(adj) được ghi nhận"
+      }
     ]
   }
 ]
