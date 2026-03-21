@@ -133,6 +133,20 @@ def load_assets_from_dir(assets_dir: Path) -> list[dict]:
     return assets
 
 
+def parse_voice_pool(raw_value: str | None) -> list[str]:
+    if not raw_value:
+        return []
+    return [voice.strip() for voice in raw_value.split(",") if voice.strip()]
+
+
+def clear_sound_mp3(sound_dir: Path) -> None:
+    if not sound_dir.exists():
+        return
+    for path in sound_dir.glob("*.mp3"):
+        if path.is_file():
+            path.unlink()
+
+
 def tts_output_path(asset: dict, sound_dir: Path) -> Path:
     audio_file = asset.get("audioFile")
     if isinstance(audio_file, str) and audio_file.strip():
@@ -256,10 +270,14 @@ def main() -> None:
         sound_dir = project_root / "assets" / "sound"
         json_assets = load_assets_from_dir(assets_dir)
         sound_dir.mkdir(parents=True, exist_ok=True)
+        clear_sound_mp3(sound_dir)
         background_images = collect_background_images(remotion_dir)
+        voice_pool = parse_voice_pool(os.getenv("EDGE_TTS_VOICE"))
 
         for data in json_assets:
             data["renderSeed"] = random.randint(0, 1_000_000_000)
+            if voice_pool:
+                data["ttsVoice"] = voice_pool[data["renderSeed"] % len(voice_pool)]
             data["backgroundImages"] = background_images
             tts_output = tts_output_path(data, sound_dir)
             build_timed_tts_audio(
