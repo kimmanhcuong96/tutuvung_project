@@ -147,6 +147,14 @@ def clear_sound_mp3(sound_dir: Path) -> None:
             path.unlink()
 
 
+def clear_output_videos(output_dir: Path) -> None:
+    if not output_dir.exists():
+        return
+    for path in output_dir.glob("*.mp4"):
+        if path.is_file():
+            path.unlink()
+
+
 def tts_output_path(asset: dict, sound_dir: Path) -> Path:
     audio_file = asset.get("audioFile")
     if isinstance(audio_file, str) and audio_file.strip():
@@ -271,6 +279,7 @@ def main() -> None:
         json_assets = load_assets_from_dir(assets_dir)
         sound_dir.mkdir(parents=True, exist_ok=True)
         clear_sound_mp3(sound_dir)
+        clear_output_videos(output_dir)
         background_images = collect_background_images(remotion_dir)
         voice_pool = parse_voice_pool(os.getenv("EDGE_TTS_VOICE"))
 

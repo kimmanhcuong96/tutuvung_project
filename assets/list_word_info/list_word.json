@@ -1,50 +1,491 @@
 [
   {
-    "word": "record",
-    "phonetic": "/rɪˈkɔːd/",
-    "meaning": "ghi lại",
-    "exampleEn": "They record every meeting.",
-    "exampleVi": "Họ ghi lại mọi cuộc họp.",
+    "word": "compound",
+    "phonetic": "/ˈkɒmpaʊnd/",
+    "meaning": "hợp chất",
+    "exampleEn": "Water is a chemical compound.",
+    "exampleVi": "Nước là một hợp chất hóa học.",
     "other_meaning": [
       {
-        "word": "record",
-        "phonetic": "/ˈrekɔːd/",
-        "meaning": "(n) hồ sơ"
+        "word": "compound",
+        "phonetic": "/ˈkɒmpaʊnd/",
+        "meaning": "(n) khu phức hợp"
       },
       {
-        "word": "record",
-        "phonetic": "/ˈrekɔːd/",
-        "meaning": "(n) kỷ lục"
+        "word": "compound",
+        "phonetic": "/kəmˈpaʊnd/",
+        "meaning": "(v) làm trầm trọng hơn"
       },
       {
-        "word": "record",
-        "phonetic": "/ˈrekɔːd/",
-        "meaning": "(n) bản ghi âm"
+        "word": "compound",
+        "phonetic": "/ˈkɒmpaʊnd/",
+        "meaning": "(adj) ghép, phức hợp"
       },
       {
-        "word": "record",
-        "phonetic": "/rɪˈkɔːd/",
-        "meaning": "(v) ghi âm"
+        "word": "compound",
+        "phonetic": "/ˈkɒmpaʊnd/",
+        "meaning": "(n) từ ghép"
       },
       {
-        "word": "record",
-        "phonetic": "/rɪˈkɔːd/",
-        "meaning": "(v) ghi chép"
+        "word": "compound",
+        "phonetic": "/kəmˈpaʊnd/",
+        "meaning": "(v) trộn lẫn"
       },
       {
-        "word": "record",
-        "phonetic": "/rɪˈkɔːd/",
-        "meaning": "(v) đăng ký chính thức"
+        "word": "compound",
+        "phonetic": "/ˈkɒmpaʊnd/",
+        "meaning": "(n) sân có tường bao"
       },
       {
-        "word": "record",
-        "phonetic": "/ˈrekɔːd/",
-        "meaning": "(adj) kỷ lục"
+        "word": "compound",
+        "phonetic": "/kəmˈpaʊnd/",
+        "meaning": "(v) giải quyết bằng dàn xếp"
       },
       {
-        "word": "record",
-        "phonetic": "/ˈrekɔːd/",
-        "meaning": "(adj) được ghi nhận"
+        "word": "compound",
+        "phonetic": "/ˈkɒmpaʊnd/",
+        "meaning": "(adj) bao gồm nhiều phần"
+      }
+    ]
+  },
+  {
+    "word": "attribute",
+    "phonetic": "/ˈætrɪbjuːt/",
+    "meaning": "đặc điểm",
+    "exampleEn": "Honesty is his best attribute.",
+    "exampleVi": "Sự trung thực là đặc điểm tốt nhất của anh ấy.",
+    "other_meaning": [
+      {
+        "word": "attribute",
+        "phonetic": "/əˈtrɪbjuːt/",
+        "meaning": "(v) quy cho"
+      },
+      {
+        "word": "attribute",
+        "phonetic": "/ˈætrɪbjuːt/",
+        "meaning": "(n) thuộc tính"
+      },
+      {
+        "word": "attribute",
+        "phonetic": "/əˈtrɪbjuːt/",
+        "meaning": "(v) cho là do"
+      },
+      {
+        "word": "attribute",
+        "phonetic": "/ˈætrɪbjuːt/",
+        "meaning": "(n) phẩm chất"
+      },
+      {
+        "word": "attribute",
+        "phonetic": "/əˈtrɪbjuːt/",
+        "meaning": "(v) gán cho"
+      },
+      {
+        "word": "attribute",
+        "phonetic": "/ˈætrɪbjuːt/",
+        "meaning": "(n) dấu hiệu đặc trưng"
+      },
+      {
+        "word": "attribute",
+        "phonetic": "/əˈtrɪbjuːt/",
+        "meaning": "(v) liên hệ nguyên nhân"
+      },
+      {
+        "word": "attribute",
+        "phonetic": "/ˈætrɪbjuːt/",
+        "meaning": "(n) đặc tính kỹ thuật"
+      }
+    ]
+  },
+  {
+    "word": "refine",
+    "phonetic": "/rɪˈfaɪn/",
+    "meaning": "tinh chế",
+    "exampleEn": "They refine oil daily.",
+    "exampleVi": "Họ tinh chế dầu mỗi ngày.",
+    "other_meaning": [
+      {
+        "word": "refine",
+        "phonetic": "/rɪˈfaɪn/",
+        "meaning": "(v) cải tiến"
+      },
+      {
+        "word": "refine",
+        "phonetic": "/rɪˈfaɪn/",
+        "meaning": "(v) làm tinh tế"
+      },
+      {
+        "word": "refine",
+        "phonetic": "/rɪˈfaɪn/",
+        "meaning": "(v) lọc bỏ tạp chất"
+      },
+      {
+        "word": "refine",
+        "phonetic": "/rɪˈfaɪn/",
+        "meaning": "(v) hoàn thiện"
+      },
+      {
+        "word": "refine",
+        "phonetic": "/rɪˈfaɪn/",
+        "meaning": "(v) nâng cao chất lượng"
+      },
+      {
+        "word": "refine",
+        "phonetic": "/rɪˈfaɪn/",
+        "meaning": "(v) làm thanh lịch"
+      },
+      {
+        "word": "refine",
+        "phonetic": "/rɪˈfaɪn/",
+        "meaning": "(v) điều chỉnh chi tiết"
+      },
+      {
+        "word": "refine",
+        "phonetic": "/rɪˈfaɪn/",
+        "meaning": "(v) làm thuần khiết"
+      }
+    ]
+  },
+  {
+    "word": "draft",
+    "phonetic": "/drɑːft/",
+    "meaning": "bản nháp",
+    "exampleEn": "I wrote a draft today.",
+    "exampleVi": "Tôi viết một bản nháp hôm nay.",
+    "other_meaning": [
+      {
+        "word": "draft",
+        "phonetic": "/dræft/",
+        "meaning": "(n) luồng gió lùa"
+      },
+      {
+        "word": "draft",
+        "phonetic": "/drɑːft/",
+        "meaning": "(v) soạn thảo"
+      },
+      {
+        "word": "draft",
+        "phonetic": "/dræft/",
+        "meaning": "(n) nghĩa vụ quân sự"
+      },
+      {
+        "word": "draft",
+        "phonetic": "/drɑːft/",
+        "meaning": "(n) bản thiết kế sơ bộ"
+      },
+      {
+        "word": "draft",
+        "phonetic": "/drɑːft/",
+        "meaning": "(v) tuyển chọn"
+      },
+      {
+        "word": "draft",
+        "phonetic": "/dræft/",
+        "meaning": "(n) ngụm uống"
+      },
+      {
+        "word": "draft",
+        "phonetic": "/drɑːft/",
+        "meaning": "(adj) chưa hoàn chỉnh"
+      },
+      {
+        "word": "draft",
+        "phonetic": "/drɑːft/",
+        "meaning": "(v) phác thảo ý tưởng"
+      }
+    ]
+  },
+  {
+    "word": "yield",
+    "phonetic": "/jiːld/",
+    "meaning": "sản lượng",
+    "exampleEn": "The farm yields more crops.",
+    "exampleVi": "Trang trại cho nhiều sản lượng hơn.",
+    "other_meaning": [
+      {
+        "word": "yield",
+        "phonetic": "/jiːld/",
+        "meaning": "(v) tạo ra"
+      },
+      {
+        "word": "yield",
+        "phonetic": "/jiːld/",
+        "meaning": "(v) nhường nhịn"
+      },
+      {
+        "word": "yield",
+        "phonetic": "/jiːld/",
+        "meaning": "(n) lợi nhuận"
+      },
+      {
+        "word": "yield",
+        "phonetic": "/jiːld/",
+        "meaning": "(v) đầu hàng"
+      },
+      {
+        "word": "yield",
+        "phonetic": "/jiːld/",
+        "meaning": "(v) chịu thua"
+      },
+      {
+        "word": "yield",
+        "phonetic": "/jiːld/",
+        "meaning": "(n) kết quả thu được"
+      },
+      {
+        "word": "yield",
+        "phonetic": "/jiːld/",
+        "meaning": "(v) sản sinh"
+      },
+      {
+        "word": "yield",
+        "phonetic": "/jiːld/",
+        "meaning": "(n) năng suất"
+      }
+    ]
+  },
+  {
+    "word": "render",
+    "phonetic": "/ˈrendə(r)/",
+    "meaning": "kết xuất",
+    "exampleEn": "The software renders images quickly.",
+    "exampleVi": "Phần mềm kết xuất hình ảnh nhanh.",
+    "other_meaning": [
+      {
+        "word": "render",
+        "phonetic": "/ˈrendə(r)/",
+        "meaning": "(v) cung cấp"
+      },
+      {
+        "word": "render",
+        "phonetic": "/ˈrendə(r)/",
+        "meaning": "(v) làm cho trở nên"
+      },
+      {
+        "word": "render",
+        "phonetic": "/ˈrendə(r)/",
+        "meaning": "(v) trình bày"
+      },
+      {
+        "word": "render",
+        "phonetic": "/ˈrendə(r)/",
+        "meaning": "(v) diễn đạt"
+      },
+      {
+        "word": "render",
+        "phonetic": "/ˈrendə(r)/",
+        "meaning": "(v) trao lại"
+      },
+      {
+        "word": "render",
+        "phonetic": "/ˈrendə(r)/",
+        "meaning": "(v) kết xuất đồ họa"
+      },
+      {
+        "word": "render",
+        "phonetic": "/ˈrendə(r)/",
+        "meaning": "(v) làm tan chảy mỡ"
+      },
+      {
+        "word": "render",
+        "phonetic": "/ˈrendə(r)/",
+        "meaning": "(v) dịch thuật"
+      }
+    ]
+  },
+  {
+    "word": "scale",
+    "phonetic": "/skeɪl/",
+    "meaning": "quy mô",
+    "exampleEn": "The project grew in scale.",
+    "exampleVi": "Dự án tăng về quy mô.",
+    "other_meaning": [
+      {
+        "word": "scale",
+        "phonetic": "/skeɪl/",
+        "meaning": "(n) thang đo"
+      },
+      {
+        "word": "scale",
+        "phonetic": "/skeɪl/",
+        "meaning": "(v) leo lên"
+      },
+      {
+        "word": "scale",
+        "phonetic": "/skeɪl/",
+        "meaning": "(n) vảy"
+      },
+      {
+        "word": "scale",
+        "phonetic": "/skeɪl/",
+        "meaning": "(v) mở rộng quy mô"
+      },
+      {
+        "word": "scale",
+        "phonetic": "/skeɪl/",
+        "meaning": "(n) tỷ lệ"
+      },
+      {
+        "word": "scale",
+        "phonetic": "/skeɪl/",
+        "meaning": "(v) điều chỉnh kích thước"
+      },
+      {
+        "word": "scale",
+        "phonetic": "/skeɪl/",
+        "meaning": "(n) bảng phân loại"
+      },
+      {
+        "word": "scale",
+        "phonetic": "/skeɪl/",
+        "meaning": "(v) loại bỏ vảy"
+      }
+    ]
+  },
+  {
+    "word": "subject",
+    "phonetic": "/ˈsʌbdʒɪkt/",
+    "meaning": "chủ đề",
+    "exampleEn": "Math is my favorite subject.",
+    "exampleVi": "Toán là chủ đề tôi thích.",
+    "other_meaning": [
+      {
+        "word": "subject",
+        "phonetic": "/ˈsʌbdʒɪkt/",
+        "meaning": "(n) môn học"
+      },
+      {
+        "word": "subject",
+        "phonetic": "/səbˈdʒekt/",
+        "meaning": "(v) khiến chịu"
+      },
+      {
+        "word": "subject",
+        "phonetic": "/ˈsʌbdʒɪkt/",
+        "meaning": "(n) đối tượng"
+      },
+      {
+        "word": "subject",
+        "phonetic": "/səbˈdʒekt/",
+        "meaning": "(v) đặt dưới quyền"
+      },
+      {
+        "word": "subject",
+        "phonetic": "/ˈsʌbdʒɪkt/",
+        "meaning": "(adj) dễ bị"
+      },
+      {
+        "word": "subject",
+        "phonetic": "/ˈsʌbdʒɪkt/",
+        "meaning": "(n) thần dân"
+      },
+      {
+        "word": "subject",
+        "phonetic": "/səbˈdʒekt/",
+        "meaning": "(v) làm lệ thuộc"
+      },
+      {
+        "word": "subject",
+        "phonetic": "/ˈsʌbdʒɪkt/",
+        "meaning": "(n) tiêu đề email"
+      }
+    ]
+  },
+  {
+    "word": "issue",
+    "phonetic": "/ˈɪʃuː/",
+    "meaning": "vấn đề",
+    "exampleEn": "We must solve this issue.",
+    "exampleVi": "Chúng ta phải giải quyết vấn đề này.",
+    "other_meaning": [
+      {
+        "word": "issue",
+        "phonetic": "/ˈɪʃuː/",
+        "meaning": "(n) số phát hành"
+      },
+      {
+        "word": "issue",
+        "phonetic": "/ˈɪʃuː/",
+        "meaning": "(v) phát hành"
+      },
+      {
+        "word": "issue",
+        "phonetic": "/ˈɪʃuː/",
+        "meaning": "(n) kết quả"
+      },
+      {
+        "word": "issue",
+        "phonetic": "/ˈɪʃuː/",
+        "meaning": "(v) cấp phát"
+      },
+      {
+        "word": "issue",
+        "phonetic": "/ˈɪʃuː/",
+        "meaning": "(n) con cháu"
+      },
+      {
+        "word": "issue",
+        "phonetic": "/ˈɪʃuː/",
+        "meaning": "(v) chảy ra"
+      },
+      {
+        "word": "issue",
+        "phonetic": "/ˈɪʃuː/",
+        "meaning": "(n) chủ đề tranh luận"
+      },
+      {
+        "word": "issue",
+        "phonetic": "/ˈɪʃuː/",
+        "meaning": "(v) công bố chính thức"
+      }
+    ]
+  },
+  {
+    "word": "conduct",
+    "phonetic": "/ˈkɒndʌkt/",
+    "meaning": "hành vi",
+    "exampleEn": "His conduct was unacceptable.",
+    "exampleVi": "Hành vi của anh ấy không thể chấp nhận.",
+    "other_meaning": [
+      {
+        "word": "conduct",
+        "phonetic": "/kənˈdʌkt/",
+        "meaning": "(v) tiến hành"
+      },
+      {
+        "word": "conduct",
+        "phonetic": "/ˈkɒndʌkt/",
+        "meaning": "(n) cách cư xử"
+      },
+      {
+        "word": "conduct",
+        "phonetic": "/kənˈdʌkt/",
+        "meaning": "(v) chỉ huy"
+      },
+      {
+        "word": "conduct",
+        "phonetic": "/kənˈdʌkt/",
+        "meaning": "(v) dẫn dắt"
+      },
+      {
+        "word": "conduct",
+        "phonetic": "/ˈkɒndʌkt/",
+        "meaning": "(n) hành vi đạo đức"
+      },
+      {
+        "word": "conduct",
+        "phonetic": "/kənˈdʌkt/",
+        "meaning": "(v) truyền dẫn"
+      },
+      {
+        "word": "conduct",
+        "phonetic": "/ˈkɒndʌkt/",
+        "meaning": "(n) quản lý hành vi"
+      },
+      {
+        "word": "conduct",
+        "phonetic": "/kənˈdʌkt/",
+        "meaning": "(v) điều hành"
       }
     ]
   }

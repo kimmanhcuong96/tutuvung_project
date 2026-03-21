@@ -2,6 +2,7 @@ import asyncio
 import os
 import subprocess
 import tempfile
+import time
 from pathlib import Path
 
 
@@ -95,16 +96,23 @@ def edge_tts_to_file(
     rate_value = rate or "+0%"
     pitch_value = pitch or "+0Hz"
     volume_value = volume or "+0%"
-    asyncio.run(
-        _edge_tts_save(
-            text=text,
-            output_path=output_path,
-            voice=voice,
-            rate=rate_value,
-            pitch=pitch_value,
-            volume=volume_value,
-        )
-    )
+    for attempt in range(3):
+        try:
+            asyncio.run(
+                _edge_tts_save(
+                    text=text,
+                    output_path=output_path,
+                    voice=voice,
+                    rate=rate_value,
+                    pitch=pitch_value,
+                    volume=volume_value,
+                )
+            )
+            return
+        except Exception as exc:
+            if exc.__class__.__name__ != "NoAudioReceived" or attempt == 2:
+                raise
+            time.sleep(0.5)
 
 
 def _tts_engine() -> str:
@@ -581,9 +589,9 @@ def build_timed_tts_audio(
             f"{word}.",
             pronounce_raw,
             voice=voice,
-            rate=adjust_percent(rate_word_emph, +35),
+            rate="+90%",
             pitch=pitch_word_emph,
-            volume=adjust_percent(volume, 1000),
+            volume=adjust_percent(volume_word_emph, 50),
         )
         apply_filter(pronounce_raw, pronounce_raw, "volume=1.5")
         try:
@@ -784,7 +792,7 @@ def build_timed_tts_audio(
             ]
         )
         tts_padded.replace(tts_only)
-        apply_filter(tts_only, tts_only, "volume=1.2")
+        apply_filter(tts_only, tts_only, "volume=1.4")
 
         if base_sound.exists():
             _run(

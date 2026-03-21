@@ -1,4 +1,4 @@
-Generate 2 English vocabulary words randomly at CEFR C1 level for Vietnamese learners. Only 2 word results. All words must be distinct and not semantically similar.
+Generate only 2 English vocabulary words randomly at CEFR B2 or C1 level for Vietnamese learners.  All words must be distinct and not semantically similar.
 
 For each item provide:
 1) word (lowercase)
@@ -32,3 +32,7 @@ For "other_meaning":
 - Avoid repeating meanings with only slight wording differences
 
 Return JSON only, no explanations.
+
+no return bellow word:   "excluded_words": ["hello", "goodbye", "compound", "attribute", "refine", "draft", "yield", "render", "scale", "subject", "issue", "conduct"]
+
+Ở cuối của result trả về, cách ra 3 dòng. Append danh sách các từ được lựa chọn thêm vào array no return bellow word.
