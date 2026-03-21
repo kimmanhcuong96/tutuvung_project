@@ -1,8 +1,10 @@
 import React from "react";
 import {
   AbsoluteFill,
+  Img,
   interpolate,
   spring,
+  staticFile,
   useCurrentFrame,
   useVideoConfig,
 } from "remotion";
@@ -14,6 +16,7 @@ export type WordProps = {
   exampleEn: string;
   exampleVi: string;
   other_meaning?: OtherMeaningItem[];
+  backgroundImages?: string[];
   renderSeed?: number;
 };
 
@@ -454,11 +457,13 @@ const CloudScene: React.FC<{
   frame: number;
   word: string;
   otherMeanings: OtherMeaningItem[];
+  backgroundImages: string[];
   renderSeed: number;
 }> = ({
   frame,
   word,
   otherMeanings,
+  backgroundImages,
   renderSeed,
 }) => {
   const {width, height} = useVideoConfig();
@@ -467,6 +472,16 @@ const CloudScene: React.FC<{
   const meaningKey = (entry: OtherMeaningItem) =>
     `${entry.word}|${entry.phonetic}|${entry.meaning}`;
   const meaningKeyList = trimmedMeanings.map(meaningKey);
+  const hasImageBackgrounds = backgroundImages.length > 0;
+  const backgroundSelectIndex = pickIndex(
+    renderSeed,
+    `bg-select-${word}-${meaningKeyList.join("|")}`,
+    backgroundColorSets.length + (hasImageBackgrounds ? backgroundImages.length : 0),
+  );
+  const imageBackground =
+    hasImageBackgrounds && backgroundSelectIndex >= backgroundColorSets.length
+      ? backgroundImages[backgroundSelectIndex - backgroundColorSets.length]
+      : null;
   const colorSet = backgroundColorSets[
     pickIndex(renderSeed, `bg-${word}-${meaningKeyList.join("|")}`, backgroundColorSets.length)
   ];
@@ -540,10 +555,24 @@ const CloudScene: React.FC<{
     <AbsoluteFill
       style={{
         overflow: "hidden",
-        background:
-          `radial-gradient(circle at 50% 50%, ${colorSet.core}, ${colorSet.mid} 58%, ${colorSet.deep} 100%)`,
+        background: imageBackground
+          ? "#000"
+          : `radial-gradient(circle at 50% 50%, ${colorSet.core}, ${colorSet.mid} 58%, ${colorSet.deep} 100%)`,
       }}
     >
+      {imageBackground ? (
+        <Img
+          src={staticFile(imageBackground)}
+          style={{
+            position: "absolute",
+            inset: 0,
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
+            opacity: 0.92,
+          }}
+        />
+      ) : null}
       <div
         style={{
           position: "absolute",
@@ -608,6 +637,17 @@ const CloudScene: React.FC<{
           >
             <div
               style={{
+                background: "rgba(8,8,10,0.58)",
+                borderRadius: Math.round(width * 0.016),
+                padding: `${Math.round(height * 0.012)}px ${Math.round(width * 0.012)}px`,
+                boxShadow: "0 10px 26px rgba(0,0,0,0.35)",
+                display: "inline-block",
+                width: "100%",
+                boxSizing: "border-box",
+              }}
+            >
+              <div
+                style={{
                 fontFamily: bodyFont,
                 fontSize: wordFont,
                 fontWeight: 700,
@@ -615,33 +655,34 @@ const CloudScene: React.FC<{
                 textShadow:
                   `0 0 10px ${meaningPalette.glow}, 0 0 22px ${meaningPalette.shadow}`,
                 lineHeight: 1.05,
-              }}
-            >
-              {meaning.word}
-            </div>
-            <div
-              style={{
-                marginTop: height * 0.008,
-                fontFamily: bodyFont,
-                fontSize: phoneticFont,
-                fontStyle: "italic",
-                fontWeight: 600,
-                color: meaningPalette.meaning,
-                lineHeight: 1.1,
-              }}
-            >
-              {meaning.phonetic}
-            </div>
-            <div
-              style={{
-                marginTop: height * 0.008,
-                fontFamily: bodyFont,
-                fontSize: meaningFont,
-                color: meaningPalette.meaning,
-                lineHeight: 1.1,
-              }}
-            >
-              {meaning.meaning}
+                }}
+              >
+                {meaning.word}
+              </div>
+              <div
+                style={{
+                  marginTop: height * 0.008,
+                  fontFamily: bodyFont,
+                  fontSize: phoneticFont,
+                  fontStyle: "italic",
+                  fontWeight: 600,
+                  color: meaningPalette.meaning,
+                  lineHeight: 1.1,
+                }}
+              >
+                {meaning.phonetic}
+              </div>
+              <div
+                style={{
+                  marginTop: height * 0.008,
+                  fontFamily: bodyFont,
+                  fontSize: meaningFont,
+                  color: meaningPalette.meaning,
+                  lineHeight: 1.1,
+                }}
+              >
+                {meaning.meaning}
+              </div>
             </div>
           </div>
         );
@@ -833,10 +874,11 @@ export const Word: React.FC<WordProps> = (item) => {
   const otherMeaningKey = (entry: OtherMeaningItem) =>
     `${entry.word}|${entry.phonetic}|${entry.meaning}`;
   const otherMeanings = item.other_meaning ?? [];
+  const backgroundImages = item.backgroundImages ?? [];
   const renderSeed =
     item.renderSeed ??
     hashString(
-      `${item.word}|${item.phonetic}|${item.meaning}|${item.exampleEn}|${item.exampleVi}|${otherMeanings.map(otherMeaningKey).join("|")}`,
+      `${item.word}|${item.phonetic}|${item.meaning}|${item.exampleEn}|${item.exampleVi}|${otherMeanings.map(otherMeaningKey).join("|")}|${backgroundImages.join("|")}`,
     );
 
   const introOpacity = ramp(boundedFrame, [0, introFrames - 12, introFrames + 8], [1, 1, 0]);
@@ -868,6 +910,7 @@ export const Word: React.FC<WordProps> = (item) => {
           frame={Math.max(0, boundedFrame - cloudStart)}
           word={item.word}
           otherMeanings={otherMeanings}
+          backgroundImages={backgroundImages}
           renderSeed={renderSeed}
         />
       </div>
