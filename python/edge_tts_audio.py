@@ -110,6 +110,8 @@ def edge_tts_to_file(
             )
             return
         except Exception as exc:
+            if exc.__class__.__name__ == "NoAudioReceived":
+                print(f"[edge-tts] NoAudioReceived for voice: {voice}")
             if exc.__class__.__name__ != "NoAudioReceived" or attempt == 2:
                 raise
             time.sleep(0.5)
@@ -120,12 +122,12 @@ def _tts_engine() -> str:
 
 
 def _tts_to_file(
-    text: str,
-    output_path: Path,
-    voice: str,
-    rate: str | None = None,
-    pitch: str | None = None,
-    volume: str | None = None,
+        text: str,
+        output_path: Path,
+        voice: str,
+        rate: str | None = None,
+        pitch: str | None = None,
+        volume: str | None = None,
 ) -> None:
     engine = _tts_engine()
     if engine == "azure":

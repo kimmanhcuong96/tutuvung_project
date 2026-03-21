@@ -284,31 +284,36 @@ def main() -> None:
         voice_pool = parse_voice_pool(os.getenv("EDGE_TTS_VOICE"))
 
         for data in json_assets:
-            data["renderSeed"] = random.randint(0, 1_000_000_000)
-            if voice_pool:
-                data["ttsVoice"] = voice_pool[data["renderSeed"] % len(voice_pool)]
-            data["backgroundImages"] = background_images
-            tts_output = tts_output_path(data, sound_dir)
-            build_timed_tts_audio(
-                asset_data=data,
-                output_path=tts_output,
-                project_root=project_root,
-            )
-            asset_data = data
-            asset_data["audioStaticPath"] = prepare_audio(project_root, asset_data, remotion_dir)
-            output_path = (output_dir / f"{tts_output.stem}.mp4").resolve()
-            render_command = [
-                npm_command(),
-                "run",
-                "render",
-                "--",
-                str(output_path),
-                "--browser-executable",
-                find_browser_executable(),
-                "--props",
-                json.dumps(asset_data, ensure_ascii=False),
-            ]
-            run_command(render_command, cwd=remotion_dir)
+            try:
+                data["renderSeed"] = random.randint(0, 1_000_000_000)
+                if voice_pool:
+                    data["ttsVoice"] = voice_pool[data["renderSeed"] % len(voice_pool)]
+                data["backgroundImages"] = background_images
+                tts_output = tts_output_path(data, sound_dir)
+                build_timed_tts_audio(
+                    asset_data=data,
+                    output_path=tts_output,
+                    project_root=project_root,
+                )
+                asset_data = data
+                asset_data["audioStaticPath"] = prepare_audio(project_root, asset_data, remotion_dir)
+                output_path = (output_dir / f"{tts_output.stem}.mp4").resolve()
+                render_command = [
+                    npm_command(),
+                    "run",
+                    "render",
+                    "--",
+                    str(output_path),
+                    "--browser-executable",
+                    find_browser_executable(),
+                    "--props",
+                    json.dumps(asset_data, ensure_ascii=False),
+                ]
+                run_command(render_command, cwd=remotion_dir)
+            except Exception as exc:
+                word = data.get("word", "unknown")
+                print(f"[main] Skip asset '{word}' due to error: {exc}")
+                continue
 
 
 if __name__ == "__main__":
