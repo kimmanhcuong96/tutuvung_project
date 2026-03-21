@@ -182,20 +182,8 @@ def prepare_audio(project_root: Path, asset_data: dict, remotion_dir: Path) -> s
     return f"runtime/{source_audio.name}"
 
 
-def sync_background_images(project_root: Path, remotion_dir: Path) -> None:
-    source_dir = project_root / "assets" / "img" / "back_ground"
-    if not source_dir.exists():
-        return
-    target_dir = remotion_dir / "public" / "back_ground"
-    target_dir.mkdir(parents=True, exist_ok=True)
-    valid_exts = {".png", ".jpg", ".jpeg", ".webp", ".jfif"}
-    for path in source_dir.iterdir():
-        if path.is_file() and path.suffix.lower() in valid_exts:
-            shutil.copy2(path, target_dir / path.name)
-
-
-def collect_background_images(project_root: Path) -> list[str]:
-    source_dir = project_root / "assets" / "img" / "back_ground"
+def collect_background_images(remotion_dir: Path) -> list[str]:
+    source_dir = remotion_dir / "public" / "back_ground"
     if not source_dir.exists():
         return []
     valid_exts = {".png", ".jpg", ".jpeg", ".webp", ".jfif"}
@@ -263,14 +251,12 @@ def main() -> None:
     # )
 
     ensure_node_version()
-    sync_background_images(project_root, remotion_dir)
-
     if not args.no_tts:
         assets_dir = project_root / "assets" / "list_word_info"
         sound_dir = project_root / "assets" / "sound"
         json_assets = load_assets_from_dir(assets_dir)
         sound_dir.mkdir(parents=True, exist_ok=True)
-        background_images = collect_background_images(project_root)
+        background_images = collect_background_images(remotion_dir)
 
         for data in json_assets:
             data["renderSeed"] = random.randint(0, 1_000_000_000)
