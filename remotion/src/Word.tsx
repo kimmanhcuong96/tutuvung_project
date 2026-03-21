@@ -251,20 +251,22 @@ const shuffleWithSeed = (seed: number, items: number[], key: string) => {
 
 const getProgressValue = (frame: number) => {
   const boundedFrame = clamp(frame, 0, totalFrames - 1);
-  const accelFrames = 120;
-  const steadyFrames = totalFrames - accelFrames;
-  const steadyTarget = 68;
+  const fps = 30;
+  const accelStartFrame = 8 * fps;
+  const endFrame = totalFrames - 1;
+  const progressAtAccelStart = 50;
 
-  if (boundedFrame <= steadyFrames) {
-    return ramp(boundedFrame, [0, steadyFrames], [0, steadyTarget]);
+  if (boundedFrame <= accelStartFrame) {
+    return ramp(boundedFrame, [0, accelStartFrame], [0, progressAtAccelStart]);
   }
 
-  const accelProgress = ramp(boundedFrame, [steadyFrames, totalFrames - 1], [0, 1]);
-  const easedAccel = Math.pow(accelProgress, 2.2);
-  return interpolate(easedAccel, [0, 1], [steadyTarget, 100], {
-    extrapolateLeft: "clamp",
-    extrapolateRight: "clamp",
-  });
+  const deltaFrames = endFrame - accelStartFrame;
+  const elapsed = boundedFrame - accelStartFrame;
+  const linearRate = progressAtAccelStart / accelStartFrame;
+  const jerk =
+    (100 - progressAtAccelStart - linearRate * deltaFrames) /
+    (deltaFrames * deltaFrames * deltaFrames);
+  return linearRate * elapsed + jerk * elapsed * elapsed * elapsed + progressAtAccelStart;
 };
 
 const ProgressBar: React.FC<{frame: number}> = ({frame}) => {
