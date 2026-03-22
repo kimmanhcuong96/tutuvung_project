@@ -159,8 +159,8 @@ def build_timed_tts_audio(
         asset_data: dict,
         output_path: Path,
         project_root: Path,
-        word_fast_end: float = 2.5,
-        word_slow_start: float = 3.0,
+        word_fast_end: float = 2.8,
+        word_slow_start: float = 3.5,
         word_slow_end: float = 9.5,
         example_start: float = 10.5,
         example_end: float = 14.5,
@@ -609,7 +609,7 @@ def build_timed_tts_audio(
         )
         print("example : ", _duration_seconds(ffprobe, example_combined))
         example_combined_duration = _duration_seconds(ffprobe, example_combined)
-        legal_duration = total_duration - word_slow_end + 1.5
+        legal_duration = total_duration - word_slow_end + 1.3
         print("alloww duration: ", legal_duration)
         if example_combined_duration > legal_duration:
             increase_rate = min(
