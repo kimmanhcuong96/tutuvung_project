@@ -1,492 +1,140 @@
 [
   {
-    "word": "compound",
-    "phonetic": "/ˈkɒmpaʊnd/",
-    "meaning": "hợp chất",
-    "exampleEn": "Water is a chemical compound.",
-    "exampleVi": "Nước là một hợp chất hóa học.",
+    "word": "风",
+    "phonetic": "fēng",
+    "meaning": "gió",
+    "exampleEn": "今天风很大。",
+    "exampleVi": "Hôm nay gió rất mạnh.",
     "other_meaning": [
-      {
-        "word": "compound",
-        "phonetic": "/ˈkɒmpaʊnd/",
-        "meaning": "(n) khu phức hợp"
-      },
-      {
-        "word": "compound",
-        "phonetic": "/kəmˈpaʊnd/",
-        "meaning": "(v) làm trầm trọng hơn"
-      },
-      {
-        "word": "compound",
-        "phonetic": "/ˈkɒmpaʊnd/",
-        "meaning": "(adj) ghép, phức hợp"
-      },
-      {
-        "word": "compound",
-        "phonetic": "/ˈkɒmpaʊnd/",
-        "meaning": "(n) từ ghép"
-      },
-      {
-        "word": "compound",
-        "phonetic": "/kəmˈpaʊnd/",
-        "meaning": "(v) trộn lẫn"
-      },
-      {
-        "word": "compound",
-        "phonetic": "/ˈkɒmpaʊnd/",
-        "meaning": "(n) sân có tường bao"
-      },
-      {
-        "word": "compound",
-        "phonetic": "/kəmˈpaʊnd/",
-        "meaning": "(v) giải quyết bằng dàn xếp"
-      },
-      {
-        "word": "compound",
-        "phonetic": "/ˈkɒmpaʊnd/",
-        "meaning": "(adj) bao gồm nhiều phần"
-      }
+      {"word": "风景", "phonetic": "fēngjǐng", "meaning": "(n) phong cảnh"},
+      {"word": "风格", "phonetic": "fēnggé", "meaning": "(n) phong cách"},
+      {"word": "风俗", "phonetic": "fēngsú", "meaning": "(n) tập tục"},
+      {"word": "刮风", "phonetic": "guā fēng", "meaning": "(v) thổi gió"},
+      {"word": "风力", "phonetic": "fēnglì", "meaning": "(n) sức gió"},
+      {"word": "风向", "phonetic": "fēngxiàng", "meaning": "(n) hướng gió"},
+      {"word": "风雨", "phonetic": "fēngyǔ", "meaning": "(n) gió mưa, khó khăn"},
+      {"word": "风味", "phonetic": "fēngwèi", "meaning": "(n) hương vị đặc trưng"},
+      {"word": "风采", "phonetic": "fēngcǎi", "meaning": "(n) dáng vẻ, phong thái"}
     ]
   },
   {
-    "word": "attribute",
-    "phonetic": "/ˈætrɪbjuːt/",
-    "meaning": "đặc điểm",
-    "exampleEn": "Honesty is his best attribute.",
-    "exampleVi": "Sự trung thực là đặc điểm tốt nhất của anh ấy.",
+    "word": "画",
+    "phonetic": "huà",
+    "meaning": "tranh",
+    "exampleEn": "我喜欢画画。",
+    "exampleVi": "Tôi thích vẽ tranh.",
     "other_meaning": [
-      {
-        "word": "attribute",
-        "phonetic": "/əˈtrɪbjuːt/",
-        "meaning": "(v) quy cho"
-      },
-      {
-        "word": "attribute",
-        "phonetic": "/ˈætrɪbjuːt/",
-        "meaning": "(n) thuộc tính"
-      },
-      {
-        "word": "attribute",
-        "phonetic": "/əˈtrɪbjuːt/",
-        "meaning": "(v) cho là do"
-      },
-      {
-        "word": "attribute",
-        "phonetic": "/ˈætrɪbjuːt/",
-        "meaning": "(n) phẩm chất"
-      },
-      {
-        "word": "attribute",
-        "phonetic": "/əˈtrɪbjuːt/",
-        "meaning": "(v) gán cho"
-      },
-      {
-        "word": "attribute",
-        "phonetic": "/ˈætrɪbjuːt/",
-        "meaning": "(n) dấu hiệu đặc trưng"
-      },
-      {
-        "word": "attribute",
-        "phonetic": "/əˈtrɪbjuːt/",
-        "meaning": "(v) liên hệ nguyên nhân"
-      },
-      {
-        "word": "attribute",
-        "phonetic": "/ˈætrɪbjuːt/",
-        "meaning": "(n) đặc tính kỹ thuật"
-      }
+      {"word": "画家", "phonetic": "huàjiā", "meaning": "(n) họa sĩ"},
+      {"word": "画展", "phonetic": "huàzhǎn", "meaning": "(n) triển lãm tranh"},
+      {"word": "画像", "phonetic": "huàxiàng", "meaning": "(n) chân dung"},
+      {"word": "画布", "phonetic": "huàbù", "meaning": "(n) vải vẽ"},
+      {"word": "画笔", "phonetic": "huàbǐ", "meaning": "(n) cọ vẽ"},
+      {"word": "画图", "phonetic": "huàtú", "meaning": "(v) vẽ sơ đồ"},
+      {"word": "漫画", "phonetic": "mànhuà", "meaning": "(n) truyện tranh"},
+      {"word": "画廊", "phonetic": "huàláng", "meaning": "(n) phòng tranh"},
+      {"word": "画质", "phonetic": "huàzhì", "meaning": "(n) chất lượng hình ảnh"}
     ]
   },
   {
-    "word": "refine",
-    "phonetic": "/rɪˈfaɪn/",
-    "meaning": "tinh chế",
-    "exampleEn": "They refine oil daily.",
-    "exampleVi": "Họ tinh chế dầu mỗi ngày.",
+    "word": "桥",
+    "phonetic": "qiáo",
+    "meaning": "cầu",
+    "exampleEn": "那座桥很高。",
+    "exampleVi": "Cây cầu kia rất cao.",
     "other_meaning": [
-      {
-        "word": "refine",
-        "phonetic": "/rɪˈfaɪn/",
-        "meaning": "(v) cải tiến"
-      },
-      {
-        "word": "refine",
-        "phonetic": "/rɪˈfaɪn/",
-        "meaning": "(v) làm tinh tế"
-      },
-      {
-        "word": "refine",
-        "phonetic": "/rɪˈfaɪn/",
-        "meaning": "(v) lọc bỏ tạp chất"
-      },
-      {
-        "word": "refine",
-        "phonetic": "/rɪˈfaɪn/",
-        "meaning": "(v) hoàn thiện"
-      },
-      {
-        "word": "refine",
-        "phonetic": "/rɪˈfaɪn/",
-        "meaning": "(v) nâng cao chất lượng"
-      },
-      {
-        "word": "refine",
-        "phonetic": "/rɪˈfaɪn/",
-        "meaning": "(v) làm thanh lịch"
-      },
-      {
-        "word": "refine",
-        "phonetic": "/rɪˈfaɪn/",
-        "meaning": "(v) điều chỉnh chi tiết"
-      },
-      {
-        "word": "refine",
-        "phonetic": "/rɪˈfaɪn/",
-        "meaning": "(v) làm thuần khiết"
-      }
+      {"word": "桥梁", "phonetic": "qiáoliáng", "meaning": "(n) cầu nối"},
+      {"word": "桥头", "phonetic": "qiáotóu", "meaning": "(n) đầu cầu"},
+      {"word": "桥下", "phonetic": "qiáoxià", "meaning": "(n) dưới cầu"},
+      {"word": "桥面", "phonetic": "qiáomiàn", "meaning": "(n) mặt cầu"},
+      {"word": "桥接", "phonetic": "qiáojiē", "meaning": "(v) kết nối (mạng)"},
+      {"word": "桥式", "phonetic": "qiáoshì", "meaning": "(adj) kiểu cầu"},
+      {"word": "铁桥", "phonetic": "tiěqiáo", "meaning": "(n) cầu sắt"},
+      {"word": "人行桥", "phonetic": "rénxíngqiáo", "meaning": "(n) cầu đi bộ"}
     ]
   },
   {
-    "word": "draft",
-    "phonetic": "/drɑːft/",
-    "meaning": "bản nháp",
-    "exampleEn": "I wrote a draft today.",
-    "exampleVi": "Tôi viết một bản nháp hôm nay.",
+    "word": "药",
+    "phonetic": "yào",
+    "meaning": "thuốc",
+    "exampleEn": "医生开了药。",
+    "exampleVi": "Bác sĩ đã kê thuốc.",
     "other_meaning": [
-      {
-        "word": "draft",
-        "phonetic": "/dræft/",
-        "meaning": "(n) luồng gió lùa"
-      },
-      {
-        "word": "draft",
-        "phonetic": "/drɑːft/",
-        "meaning": "(v) soạn thảo"
-      },
-      {
-        "word": "draft",
-        "phonetic": "/dræft/",
-        "meaning": "(n) nghĩa vụ quân sự"
-      },
-      {
-        "word": "draft",
-        "phonetic": "/drɑːft/",
-        "meaning": "(n) bản thiết kế sơ bộ"
-      },
-      {
-        "word": "draft",
-        "phonetic": "/drɑːft/",
-        "meaning": "(v) tuyển chọn"
-      },
-      {
-        "word": "draft",
-        "phonetic": "/dræft/",
-        "meaning": "(n) ngụm uống"
-      },
-      {
-        "word": "draft",
-        "phonetic": "/drɑːft/",
-        "meaning": "(adj) chưa hoàn chỉnh"
-      },
-      {
-        "word": "draft",
-        "phonetic": "/drɑːft/",
-        "meaning": "(v) phác thảo ý tưởng"
-      }
+      {"word": "药店", "phonetic": "yàodiàn", "meaning": "(n) nhà thuốc"},
+      {"word": "药片", "phonetic": "yàopiàn", "meaning": "(n) viên thuốc"},
+      {"word": "药材", "phonetic": "yàocái", "meaning": "(n) dược liệu"},
+      {"word": "药方", "phonetic": "yàofāng", "meaning": "(n) đơn thuốc"},
+      {"word": "药效", "phonetic": "yàoxiào", "meaning": "(n) hiệu quả thuốc"},
+      {"word": "药物", "phonetic": "yàowù", "meaning": "(n) chất dược"},
+      {"word": "药膏", "phonetic": "yàogāo", "meaning": "(n) thuốc mỡ"},
+      {"word": "中药", "phonetic": "zhōngyào", "meaning": "(n) thuốc Trung y"}
     ]
   },
   {
-    "word": "yield",
-    "phonetic": "/jiːld/",
-    "meaning": "sản lượng",
-    "exampleEn": "The farm yields more crops.",
-    "exampleVi": "Trang trại cho nhiều sản lượng hơn.",
+    "word": "星",
+    "phonetic": "xīng",
+    "meaning": "ngôi sao",
+    "exampleEn": "夜空有很多星。",
+    "exampleVi": "Bầu trời đêm có nhiều sao.",
     "other_meaning": [
-      {
-        "word": "yield",
-        "phonetic": "/jiːld/",
-        "meaning": "(v) tạo ra"
-      },
-      {
-        "word": "yield",
-        "phonetic": "/jiːld/",
-        "meaning": "(v) nhường nhịn"
-      },
-      {
-        "word": "yield",
-        "phonetic": "/jiːld/",
-        "meaning": "(n) lợi nhuận"
-      },
-      {
-        "word": "yield",
-        "phonetic": "/jiːld/",
-        "meaning": "(v) đầu hàng"
-      },
-      {
-        "word": "yield",
-        "phonetic": "/jiːld/",
-        "meaning": "(v) chịu thua"
-      },
-      {
-        "word": "yield",
-        "phonetic": "/jiːld/",
-        "meaning": "(n) kết quả thu được"
-      },
-      {
-        "word": "yield",
-        "phonetic": "/jiːld/",
-        "meaning": "(v) sản sinh"
-      },
-      {
-        "word": "yield",
-        "phonetic": "/jiːld/",
-        "meaning": "(n) năng suất"
-      }
+      {"word": "明星", "phonetic": "míngxīng", "meaning": "(n) người nổi tiếng"},
+      {"word": "星座", "phonetic": "xīngzuò", "meaning": "(n) chòm sao"},
+      {"word": "星球", "phonetic": "xīngqiú", "meaning": "(n) hành tinh"},
+      {"word": "星光", "phonetic": "xīngguāng", "meaning": "(n) ánh sao"},
+      {"word": "流星", "phonetic": "liúxīng", "meaning": "(n) sao băng"},
+      {"word": "星系", "phonetic": "xīngxì", "meaning": "(n) thiên hà"},
+      {"word": "星夜", "phonetic": "xīngyè", "meaning": "(n) đêm đầy sao"},
+      {"word": "星标", "phonetic": "xīngbiāo", "meaning": "(v/n) đánh dấu bằng sao"}
     ]
   },
   {
-    "word": "render",
-    "phonetic": "/ˈrendə(r)/",
-    "meaning": "kết xuất",
-    "exampleEn": "The software renders images quickly.",
-    "exampleVi": "Phần mềm kết xuất hình ảnh nhanh.",
+    "word": "雪",
+    "phonetic": "xuě",
+    "meaning": "tuyết",
+    "exampleEn": "下雪了。",
+    "exampleVi": "Trời đang rơi tuyết.",
     "other_meaning": [
-      {
-        "word": "render",
-        "phonetic": "/ˈrendə(r)/",
-        "meaning": "(v) cung cấp"
-      },
-      {
-        "word": "render",
-        "phonetic": "/ˈrendə(r)/",
-        "meaning": "(v) làm cho trở nên"
-      },
-      {
-        "word": "render",
-        "phonetic": "/ˈrendə(r)/",
-        "meaning": "(v) trình bày"
-      },
-      {
-        "word": "render",
-        "phonetic": "/ˈrendə(r)/",
-        "meaning": "(v) diễn đạt"
-      },
-      {
-        "word": "render",
-        "phonetic": "/ˈrendə(r)/",
-        "meaning": "(v) trao lại"
-      },
-      {
-        "word": "render",
-        "phonetic": "/ˈrendə(r)/",
-        "meaning": "(v) kết xuất đồ họa"
-      },
-      {
-        "word": "render",
-        "phonetic": "/ˈrendə(r)/",
-        "meaning": "(v) làm tan chảy mỡ"
-      },
-      {
-        "word": "render",
-        "phonetic": "/ˈrendə(r)/",
-        "meaning": "(v) dịch thuật"
-      }
+      {"word": "雪花", "phonetic": "xuěhuā", "meaning": "(n) bông tuyết"},
+      {"word": "大雪", "phonetic": "dàxuě", "meaning": "(n) tuyết rơi dày"},
+      {"word": "雪人", "phonetic": "xuěrén", "meaning": "(n) người tuyết"},
+      {"word": "雪地", "phonetic": "xuědì", "meaning": "(n) vùng tuyết"},
+      {"word": "滑雪", "phonetic": "huáxuě", "meaning": "(v) trượt tuyết"},
+      {"word": "雪白", "phonetic": "xuěbái", "meaning": "(adj) trắng như tuyết"},
+      {"word": "雪山", "phonetic": "xuěshān", "meaning": "(n) núi tuyết"},
+      {"word": "雪糕", "phonetic": "xuěgāo", "meaning": "(n) kem"}
     ]
   },
   {
-    "word": "scale",
-    "phonetic": "/skeɪl/",
-    "meaning": "quy mô",
-    "exampleEn": "The project grew in scale.",
-    "exampleVi": "Dự án tăng về quy mô.",
+    "word": "鸟",
+    "phonetic": "niǎo",
+    "meaning": "chim",
+    "exampleEn": "树上有鸟。",
+    "exampleVi": "Có chim trên cây.",
     "other_meaning": [
-      {
-        "word": "scale",
-        "phonetic": "/skeɪl/",
-        "meaning": "(n) thang đo"
-      },
-      {
-        "word": "scale",
-        "phonetic": "/skeɪl/",
-        "meaning": "(v) leo lên"
-      },
-      {
-        "word": "scale",
-        "phonetic": "/skeɪl/",
-        "meaning": "(n) vảy"
-      },
-      {
-        "word": "scale",
-        "phonetic": "/skeɪl/",
-        "meaning": "(v) mở rộng quy mô"
-      },
-      {
-        "word": "scale",
-        "phonetic": "/skeɪl/",
-        "meaning": "(n) tỷ lệ"
-      },
-      {
-        "word": "scale",
-        "phonetic": "/skeɪl/",
-        "meaning": "(v) điều chỉnh kích thước"
-      },
-      {
-        "word": "scale",
-        "phonetic": "/skeɪl/",
-        "meaning": "(n) bảng phân loại"
-      },
-      {
-        "word": "scale",
-        "phonetic": "/skeɪl/",
-        "meaning": "(v) loại bỏ vảy"
-      }
+      {"word": "鸟类", "phonetic": "niǎolèi", "meaning": "(n) loài chim"},
+      {"word": "鸟巢", "phonetic": "niǎocháo", "meaning": "(n) tổ chim"},
+      {"word": "小鸟", "phonetic": "xiǎoniǎo", "meaning": "(n) chim non"},
+      {"word": "飞鸟", "phonetic": "fēiniǎo", "meaning": "(n) chim bay"},
+      {"word": "鸟鸣", "phonetic": "niǎomíng", "meaning": "(n) tiếng chim hót"},
+      {"word": "鸟蛋", "phonetic": "niǎodàn", "meaning": "(n) trứng chim"},
+      {"word": "鸟食", "phonetic": "niǎoshí", "meaning": "(n) thức ăn chim"},
+      {"word": "天鸟", "phonetic": "tiānniǎo", "meaning": "(n) chim trời"}
     ]
   },
   {
-    "word": "subject",
-    "phonetic": "/ˈsʌbdʒɪkt/",
-    "meaning": "chủ đề",
-    "exampleEn": "Math is my favorite subject.",
-    "exampleVi": "Toán là chủ đề tôi thích.",
+    "word": "灯",
+    "phonetic": "dēng",
+    "meaning": "đèn",
+    "exampleEn": "房间里有灯。",
+    "exampleVi": "Trong phòng có đèn.",
     "other_meaning": [
-      {
-        "word": "subject",
-        "phonetic": "/ˈsʌbdʒɪkt/",
-        "meaning": "(n) môn học"
-      },
-      {
-        "word": "subject",
-        "phonetic": "/səbˈdʒekt/",
-        "meaning": "(v) khiến chịu"
-      },
-      {
-        "word": "subject",
-        "phonetic": "/ˈsʌbdʒɪkt/",
-        "meaning": "(n) đối tượng"
-      },
-      {
-        "word": "subject",
-        "phonetic": "/səbˈdʒekt/",
-        "meaning": "(v) đặt dưới quyền"
-      },
-      {
-        "word": "subject",
-        "phonetic": "/ˈsʌbdʒɪkt/",
-        "meaning": "(adj) dễ bị"
-      },
-      {
-        "word": "subject",
-        "phonetic": "/ˈsʌbdʒɪkt/",
-        "meaning": "(n) thần dân"
-      },
-      {
-        "word": "subject",
-        "phonetic": "/səbˈdʒekt/",
-        "meaning": "(v) làm lệ thuộc"
-      },
-      {
-        "word": "subject",
-        "phonetic": "/ˈsʌbdʒɪkt/",
-        "meaning": "(n) tiêu đề email"
-      }
-    ]
-  },
-  {
-    "word": "issue",
-    "phonetic": "/ˈɪʃuː/",
-    "meaning": "vấn đề",
-    "exampleEn": "We must solve this issue.",
-    "exampleVi": "Chúng ta phải giải quyết vấn đề này.",
-    "other_meaning": [
-      {
-        "word": "issue",
-        "phonetic": "/ˈɪʃuː/",
-        "meaning": "(n) số phát hành"
-      },
-      {
-        "word": "issue",
-        "phonetic": "/ˈɪʃuː/",
-        "meaning": "(v) phát hành"
-      },
-      {
-        "word": "issue",
-        "phonetic": "/ˈɪʃuː/",
-        "meaning": "(n) kết quả"
-      },
-      {
-        "word": "issue",
-        "phonetic": "/ˈɪʃuː/",
-        "meaning": "(v) cấp phát"
-      },
-      {
-        "word": "issue",
-        "phonetic": "/ˈɪʃuː/",
-        "meaning": "(n) con cháu"
-      },
-      {
-        "word": "issue",
-        "phonetic": "/ˈɪʃuː/",
-        "meaning": "(v) chảy ra"
-      },
-      {
-        "word": "issue",
-        "phonetic": "/ˈɪʃuː/",
-        "meaning": "(n) chủ đề tranh luận"
-      },
-      {
-        "word": "issue",
-        "phonetic": "/ˈɪʃuː/",
-        "meaning": "(v) công bố chính thức"
-      }
-    ]
-  },
-  {
-    "word": "conduct",
-    "phonetic": "/ˈkɒndʌkt/",
-    "meaning": "hành vi",
-    "exampleEn": "His conduct was unacceptable.",
-    "exampleVi": "Hành vi của anh ấy không thể chấp nhận.",
-    "other_meaning": [
-      {
-        "word": "conduct",
-        "phonetic": "/kənˈdʌkt/",
-        "meaning": "(v) tiến hành"
-      },
-      {
-        "word": "conduct",
-        "phonetic": "/ˈkɒndʌkt/",
-        "meaning": "(n) cách cư xử"
-      },
-      {
-        "word": "conduct",
-        "phonetic": "/kənˈdʌkt/",
-        "meaning": "(v) chỉ huy"
-      },
-      {
-        "word": "conduct",
-        "phonetic": "/kənˈdʌkt/",
-        "meaning": "(v) dẫn dắt"
-      },
-      {
-        "word": "conduct",
-        "phonetic": "/ˈkɒndʌkt/",
-        "meaning": "(n) hành vi đạo đức"
-      },
-      {
-        "word": "conduct",
-        "phonetic": "/kənˈdʌkt/",
-        "meaning": "(v) truyền dẫn"
-      },
-      {
-        "word": "conduct",
-        "phonetic": "/ˈkɒndʌkt/",
-        "meaning": "(n) quản lý hành vi"
-      },
-      {
-        "word": "conduct",
-        "phonetic": "/kənˈdʌkt/",
-        "meaning": "(v) điều hành"
-      }
+      {"word": "灯光", "phonetic": "dēngguāng", "meaning": "(n) ánh sáng đèn"},
+      {"word": "电灯", "phonetic": "diàndēng", "meaning": "(n) đèn điện"},
+      {"word": "台灯", "phonetic": "táidēng", "meaning": "(n) đèn bàn"},
+      {"word": "红灯", "phonetic": "hóngdēng", "meaning": "(n) đèn đỏ"},
+      {"word": "路灯", "phonetic": "lùdēng", "meaning": "(n) đèn đường"},
+      {"word": "灯笼", "phonetic": "dēnglóng", "meaning": "(n) lồng đèn"},
+      {"word": "灯泡", "phonetic": "dēngpào", "meaning": "(n) bóng đèn"},
+      {"word": "灯饰", "phonetic": "dēngshì", "meaning": "(n) trang trí đèn"}
     ]
   }
 ]

@@ -6,6 +6,8 @@ import tempfile
 import time
 from pathlib import Path
 
+import util
+
 
 class EdgeTTSError(RuntimeError):
     pass
@@ -182,34 +184,19 @@ def build_timed_tts_audio(
         rate = os.getenv("AZURE_TTS_RATE")
         rate_word_fast = os.getenv("AZURE_TTS_RATE_WORD_FAST") or rate
         rate_word_slow = os.getenv("AZURE_TTS_RATE_WORD_SLOW") or rate
-        rate_word_emph = os.getenv("AZURE_TTS_RATE_WORD_EMPH") or rate
-        rate_word_emph_second = os.getenv("AZURE_TTS_RATE_WORD_EMPH_SECOND") or rate_word_emph
         rate_example = os.getenv("AZURE_TTS_RATE_EXAMPLE") or rate
         pitch = os.getenv("AZURE_TTS_PITCH")
-        pitch_word_emph = os.getenv("AZURE_TTS_PITCH_WORD_EMPH") or pitch
-        pitch_word_emph_second = os.getenv("AZURE_TTS_PITCH_WORD_EMPH_SECOND") or pitch_word_emph
         volume = os.getenv("AZURE_TTS_VOLUME")
-        volume_word_emph = os.getenv("AZURE_TTS_VOLUME_WORD_EMPH") or volume
-        volume_word_emph_second = os.getenv("AZURE_TTS_VOLUME_WORD_EMPH_SECOND") or volume_word_emph
-        emph_gain = os.getenv("AZURE_TTS_WORD_EMPH_GAIN")
     elif engine == "edge":
         voice = asset_data.get("ttsVoice") or _require_env("EDGE_TTS_VOICE")
         rate = os.getenv("EDGE_TTS_RATE")
         rate_word_fast = os.getenv("EDGE_TTS_RATE_WORD_FAST") or rate
         rate_word_slow = os.getenv("EDGE_TTS_RATE_WORD_SLOW") or rate
-        rate_word_emph = os.getenv("EDGE_TTS_RATE_WORD_EMPH") or rate
-        rate_word_emph_second = os.getenv("EDGE_TTS_RATE_WORD_EMPH_SECOND") or rate_word_emph
         rate_example = os.getenv("EDGE_TTS_RATE_EXAMPLE") or rate
         pitch = os.getenv("EDGE_TTS_PITCH")
-        pitch_word_emph = os.getenv("EDGE_TTS_PITCH_WORD_EMPH") or pitch
-        pitch_word_emph_second = os.getenv("EDGE_TTS_PITCH_WORD_EMPH_SECOND") or pitch_word_emph
         volume = os.getenv("EDGE_TTS_VOLUME")
-        volume_word_emph = os.getenv("EDGE_TTS_VOLUME_WORD_EMPH") or volume
-        volume_word_emph_second = os.getenv("EDGE_TTS_VOLUME_WORD_EMPH_SECOND") or volume_word_emph
-        emph_gain = os.getenv("EDGE_TTS_WORD_EMPH_GAIN")
     else:
         raise EdgeTTSError(f"Unsupported TTS_ENGINE value: {engine}")
-    emph_gain = float(emph_gain) if emph_gain else None
     base_sound = (
             project_root
             / "assets"
@@ -227,7 +214,6 @@ def build_timed_tts_audio(
         word_slow_low = tmp / "word_slow_low.mp3"
         word_slow_pattern = tmp / "word_slow_pattern.mp3"
         word_slow_trimmed = tmp / "word_slow_trimmed.mp3"
-        word_slow_fade = tmp / "word_slow_fade.mp3"
         example_raw = tmp / "example.mp3"
         spelling_raw = tmp / "spelling.mp3"
         pronounce_raw = tmp / "pronounce.mp3"
@@ -267,13 +253,19 @@ def build_timed_tts_audio(
             unit_word_duration = _duration_seconds(ffprobe, target_path)
             if unit_word_duration <= duration:
                 repeats = max(1, math.floor(duration / unit_word_duration))
-                if repeats == 1:
-                    rate_value = "+100%"
-                    repeats = 3
-                if repeats == 2:
-                    rate_value = "+78%"
-                    repeats = 3
+                print("cal-repeats: ", repeats)
+                if util.is_english_word(word):
+                    if repeats == 1:
+                        rate_value = "+100%"
+                        repeats = 3
+                    if repeats == 2:
+                        rate_value = "+78%"
+                        repeats = 3
+
             word_prompt = (separator.join([word] * repeats)).strip()
+            if util.is_chinese_word(prompt):
+                word_prompt = word_prompt + "-" + prompt
+
             print('repeats: ', repeats)
             _tts_to_file(
                 word_prompt,
@@ -398,6 +390,8 @@ def build_timed_tts_audio(
 
         # create first 2.5 second mp3
         fast_promt = f"{word}"
+        if util.is_chinese_word(word):
+            rate_word_fast = "+20%"
         render_word_segment(word_fast_raw, fast_duration, rate_word_fast, pitch, "+20%", prompt=fast_promt,
                             separator=" - ")
         trim_segment(word_fast_raw, word_fast_trimmed, fast_duration, gain=1.15)
@@ -406,6 +400,8 @@ def build_timed_tts_audio(
         # Build alternating low/high pitch word clips for the slow segment.
         # Use two reads per prompt to increase density.
         steady_prompt = f"{word}...? - {word}..."
+        if util.is_chinese_word(word):
+            steady_prompt = f"{word}..."
         render_word_segment(word_slow_low, slow_duration, rate_word_slow, pitch, volume, prompt=steady_prompt)
         trim_silence_edges(word_slow_low, word_slow_low)
         concat_list.write_text(
@@ -457,9 +453,11 @@ def build_timed_tts_audio(
             ]
         )
         ensure_duration(word_slow_trimmed, slow_duration)
+        if util.is_english_word(word):
+            spelling_text = " ".join(list(word))
+            _tts_to_file(spelling_text, spelling_raw, voice=voice, rate="+20%", pitch="+5Hz", volume=volume)
+            trim_silence_edges(spelling_raw, spelling_raw)
 
-        spelling_text = " ".join(list(word))
-        _tts_to_file(spelling_text, spelling_raw, voice=voice, rate="+20%", pitch="+5Hz", volume=volume)
         _tts_to_file(
             f"{word}.",
             pronounce_raw,
@@ -475,36 +473,47 @@ def build_timed_tts_audio(
             apply_filter(pronounce_raw, pronounce_raw, f"afade=t=out:st={fade_start}:d=0.18")
         except subprocess.CalledProcessError:
             pass
+        if util.is_chinese_word(word):
+            rate_example = "-15%"
         _tts_to_file(example, example_raw, voice=voice, rate=rate_example, pitch=pitch, volume=volume)
-        trim_silence_edges(spelling_raw, spelling_raw)
         trim_silence_edges(pronounce_raw, pronounce_raw)
         trim_silence_edges(example_raw, example_raw)
 
         spelling_pronounce_ready = False
-        try:
-            _run(
-                [
-                    str(ffmpeg),
-                    "-hide_banner",
-                    "-loglevel",
-                    "error",
-                    "-y",
-                    "-i",
-                    str(spelling_raw),
-                    "-i",
-                    str(pronounce_raw),
-                    "-filter_complex",
-                    "[0:a][1:a]acrossfade=d=0.15:c1=tri:c2=tri",
-                    "-c:a",
-                    "libmp3lame",
-                    "-q:a",
-                    "2",
-                    str(spelling_pronounce),
-                ]
-            )
-            spelling_pronounce_ready = True
-        except subprocess.CalledProcessError:
-            spelling_pronounce_ready = False
+        if util.is_english_word(word):
+            try:
+                _run(
+                    [
+                        str(ffmpeg),
+                        "-hide_banner",
+                        "-loglevel",
+                        "error",
+                        "-y",
+                        "-i",
+                        str(spelling_raw),
+                        "-i",
+                        str(pronounce_raw),
+                        "-filter_complex",
+                        "[0:a][1:a]acrossfade=d=0.15:c1=tri:c2=tri",
+                        "-c:a",
+                        "libmp3lame",
+                        "-q:a",
+                        "2",
+                        str(spelling_pronounce),
+                    ]
+                )
+                spelling_pronounce_ready = True
+            except subprocess.CalledProcessError:
+                spelling_pronounce_ready = False
+
+        concat_parts = []
+        if util.is_english_word(word):
+            if spelling_pronounce_ready:
+                concat_parts.append(spelling_pronounce)
+            else:
+                concat_parts.extend([spelling_raw, pronounce_raw])
+        else:
+            concat_parts.append(pronounce_raw)
 
         _run(
             [
@@ -527,12 +536,6 @@ def build_timed_tts_audio(
             ]
         )
         ensure_duration(silence_25, word_slow_start - word_fast_end)
-
-        concat_parts = []
-        if spelling_pronounce_ready:
-            concat_parts.append(spelling_pronounce)
-        else:
-            concat_parts.extend([spelling_raw, pronounce_raw])
         concat_parts.append(example_raw)
         concat_list.write_text(
             "\n".join([f"file '{p.as_posix()}'" for p in concat_parts]),
@@ -609,7 +612,7 @@ def build_timed_tts_audio(
         )
         print("example : ", _duration_seconds(ffprobe, example_combined))
         example_combined_duration = _duration_seconds(ffprobe, example_combined)
-        legal_duration = total_duration - word_slow_end + 1.3
+        legal_duration = total_duration - word_slow_end + 1.2
         print("alloww duration: ", legal_duration)
         if example_combined_duration > legal_duration:
             increase_rate = min(

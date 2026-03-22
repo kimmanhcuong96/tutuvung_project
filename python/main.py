@@ -5,6 +5,7 @@ import random
 import shutil
 import subprocess
 from pathlib import Path
+import util
 
 from edge_tts_audio import build_timed_tts_audio
 from groq_generate_assets import generate_assets_from_prompts
@@ -281,9 +282,17 @@ def main() -> None:
         clear_sound_mp3(sound_dir)
         clear_output_videos(output_dir)
         background_images = collect_background_images(remotion_dir)
-        voice_pool = parse_voice_pool(os.getenv("EDGE_TTS_VOICE"))
+        if json_assets is None or len(json_assets) == 0:
+            return
+        elif util.is_english_word(json_assets[0]["word"]):
+            voice_pool = parse_voice_pool(os.getenv("EDGE_TTS_VOICE"))
+        elif util.is_chinese_word(json_assets[0]["word"]):
+            voice_pool = parse_voice_pool(os.getenv("EDGE_TTS_VOICE_CHINESE"))
+        else:
+            return
 
         for data in json_assets:
+            print("data ", data)
             try:
                 data["renderSeed"] = random.randint(0, 1_000_000_000)
                 if voice_pool:
