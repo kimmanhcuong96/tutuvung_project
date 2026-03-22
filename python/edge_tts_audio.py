@@ -1,4 +1,5 @@
 import asyncio
+import math
 import os
 import subprocess
 import tempfile
@@ -161,7 +162,6 @@ def build_timed_tts_audio(
         word_fast_end: float = 2.5,
         word_slow_start: float = 3.0,
         word_slow_end: float = 9.5,
-        word_emph_end: float = 10.0,
         example_start: float = 10.5,
         example_end: float = 14.5,
         total_duration: float = 15.0,
@@ -225,20 +225,15 @@ def build_timed_tts_audio(
         word_fast_raw = tmp / "word_fast.mp3"
         word_fast_trimmed = tmp / "word_fast_trimmed.mp3"
         word_slow_low = tmp / "word_slow_low.mp3"
-        word_slow_high = tmp / "word_slow_high.mp3"
         word_slow_pattern = tmp / "word_slow_pattern.mp3"
         word_slow_trimmed = tmp / "word_slow_trimmed.mp3"
         word_slow_fade = tmp / "word_slow_fade.mp3"
-        word_emph_raw = tmp / "word_emph.mp3"
-        word_emph_second_raw = tmp / "word_emph_second.mp3"
-        word_emph_padded = tmp / "word_emph_padded.mp3"
         example_raw = tmp / "example.mp3"
         spelling_raw = tmp / "spelling.mp3"
         pronounce_raw = tmp / "pronounce.mp3"
         spelling_pronounce = tmp / "spelling_pronounce.mp3"
         example_combined = tmp / "example_combined.mp3"
         silence_25 = tmp / "silence_25.mp3"
-        example_trimmed = tmp / "example_trimmed.mp3"
         example_pad = tmp / "example_pad.mp3"
         tail_silence = tmp / "tail_silence.mp3"
         concat_list = tmp / "concat.txt"
@@ -251,25 +246,43 @@ def build_timed_tts_audio(
                 pitch_value: str | None,
                 volume_value: str | None,
                 separator: str = ". ",
-                prompt: str | None = None,
+                prompt: str | None = None
         ) -> None:
-            repeats = 6
-            while True:
-                if prompt is None:
-                    word_prompt = (separator.join([word] * repeats)).strip()
-                else:
-                    word_prompt = prompt
-                _tts_to_file(
-                    word_prompt,
-                    target_path,
-                    voice=voice,
-                    rate=rate_value,
-                    pitch=pitch_value,
-                    volume=volume_value,
-                )
-                if _duration_seconds(ffprobe, target_path) >= duration or repeats >= 40:
-                    break
-                repeats += 4
+            print('debug prompt: ', prompt)
+            print('word: ', word)
+            print('rate ', rate_value)
+            if prompt is None:
+                word_prompt = word
+            else:
+                word_prompt = prompt
+            _tts_to_file(
+                word_prompt,
+                target_path,
+                voice=voice,
+                rate=rate_value,
+                pitch=pitch_value,
+                volume=volume_value,
+            )
+            repeats = 1
+            unit_word_duration = _duration_seconds(ffprobe, target_path)
+            if unit_word_duration <= duration:
+                repeats = max(1, math.floor(duration / unit_word_duration))
+                if repeats == 1:
+                    rate_value = "+100%"
+                    repeats = 3
+                if repeats == 2:
+                    rate_value = "+78%"
+                    repeats = 3
+            word_prompt = (separator.join([word] * repeats)).strip()
+            print('repeats: ', repeats)
+            _tts_to_file(
+                word_prompt,
+                target_path,
+                voice=voice,
+                rate=rate_value,
+                pitch=pitch_value,
+                volume=volume_value,
+            )
 
         def trim_segment(input_path: Path, output_path: Path, duration: float, gain: float | None = None) -> None:
             temp_output = None
@@ -380,84 +393,25 @@ def build_timed_tts_audio(
                 return value
             return f"{base + delta:+d}%"
 
-        def render_emph_two_reads(duration: float) -> Path:
-            base_rate = parse_rate(rate_word_emph)
-            base_rate_second = parse_rate(rate_word_emph_second)
-            for step in range(0, 9):
-                rate_value = f"{base_rate + step * 10:+d}%"
-                rate_value_second = f"{base_rate_second + step * 10:+d}%"
-                _tts_to_file(
-                    f"{word}.",
-                    word_emph_raw,
-                    voice=voice,
-                    rate=rate_value,
-                    pitch=pitch_word_emph,
-                    volume=volume_word_emph,
-                )
-                _tts_to_file(
-                    f"{word}.",
-                    word_emph_second_raw,
-                    voice=voice,
-                    rate=rate_value_second,
-                    pitch=pitch_word_emph_second,
-                    volume=volume_word_emph_second,
-                )
-                concat_list.write_text(
-                    "\n".join(
-                        [
-                            f"file '{word_emph_raw.as_posix()}'",
-                            f"file '{word_emph_second_raw.as_posix()}'",
-                        ]
-                    ),
-                    encoding="utf-8",
-                )
-                _run(
-                    [
-                        str(ffmpeg),
-                        "-hide_banner",
-                        "-loglevel",
-                        "error",
-                        "-y",
-                        "-f",
-                        "concat",
-                        "-safe",
-                        "0",
-                        "-i",
-                        str(concat_list),
-                        "-c:a",
-                        "libmp3lame",
-                        "-q:a",
-                        "2",
-                        str(word_emph_padded),
-                    ]
-                )
-                if _duration_seconds(ffprobe, word_emph_padded) <= duration:
-                    return word_emph_padded
-            return word_emph_padded
-
         fast_duration = max(0.0, word_fast_end)
         slow_duration = max(0.0, word_slow_end - word_slow_start)
-        emph_duration = max(0.0, word_emph_end - word_slow_end)
 
         # create first 2.5 second mp3
-        render_word_segment(word_fast_raw, fast_duration, rate_word_fast, pitch, volume, separator=" - ")
+        fast_promt = f"{word}"
+        render_word_segment(word_fast_raw, fast_duration, rate_word_fast, pitch, "+20%", prompt=fast_promt,
+                            separator=" - ")
         trim_segment(word_fast_raw, word_fast_trimmed, fast_duration, gain=1.15)
         ensure_duration(word_fast_trimmed, fast_duration)
 
         # Build alternating low/high pitch word clips for the slow segment.
         # Use two reads per prompt to increase density.
-        low_prompt = f"{word}..."
-        high_prompt = f"{word}..."
-        render_word_segment(word_slow_low, slow_duration, rate_word_slow, pitch, volume, prompt=low_prompt)
-        render_word_segment(word_slow_high, slow_duration, rate_word_slow, pitch_word_emph, volume, prompt=high_prompt)
+        steady_prompt = f"{word}...? - {word}..."
+        render_word_segment(word_slow_low, slow_duration, rate_word_slow, pitch, volume, prompt=steady_prompt)
         trim_silence_edges(word_slow_low, word_slow_low)
-        trim_silence_edges(word_slow_high, word_slow_high)
         concat_list.write_text(
             "\n".join(
                 [
-                    f"file '{word_slow_low.as_posix()}'",
-                    f"file '{word_slow_high.as_posix()}'",
-                    f"file '{word_slow_low.as_posix()}'",
+                    f"file '{word_slow_low.as_posix()}'"
                 ]
             ),
             encoding="utf-8",
@@ -504,96 +458,15 @@ def build_timed_tts_audio(
         )
         ensure_duration(word_slow_trimmed, slow_duration)
 
-        emph_tail = 0.12
-        emph_content_duration = max(0.1, emph_duration - emph_tail)
-
-        emph_source = render_emph_two_reads(emph_content_duration)
-        emph_actual = _duration_seconds(ffprobe, emph_source)
-        if emph_actual > emph_content_duration:
-            tempo = max(0.5, min(2.0, emph_actual / emph_content_duration))
-            apply_filter(
-                emph_source,
-                word_emph_padded,
-                f"atempo={tempo}",
-            )
-            emph_source = word_emph_padded
-            emph_actual = _duration_seconds(ffprobe, emph_source)
-
-        if emph_actual + 0.01 < emph_content_duration:
-            pad = emph_content_duration - emph_actual
-            padded_tmp = word_emph_padded.with_name(
-                f"{word_emph_padded.stem}_tmp{word_emph_padded.suffix}"
-            )
-            _run(
-                [
-                    str(ffmpeg),
-                    "-hide_banner",
-                    "-loglevel",
-                    "error",
-                    "-y",
-                    "-i",
-                    str(emph_source),
-                    "-f",
-                    "lavfi",
-                    "-i",
-                    "anullsrc=r=44100:cl=stereo",
-                    "-t",
-                    f"{pad}",
-                    "-filter_complex",
-                    "[0:a][1:a]concat=n=2:v=0:a=1",
-                    "-c:a",
-                    "libmp3lame",
-                    "-q:a",
-                    "2",
-                    str(padded_tmp),
-                ]
-            )
-            padded_tmp.replace(word_emph_padded)
-        else:
-            word_emph_padded = emph_source
-
-        if emph_gain:
-            apply_filter(word_emph_padded, word_emph_padded, f"volume={emph_gain}")
-
-        # Add a short tail silence to avoid cutting the last syllable before exampleEn.
-        tail_tmp = word_emph_padded.with_name(
-            f"{word_emph_padded.stem}_tail{word_emph_padded.suffix}"
-        )
-        _run(
-            [
-                str(ffmpeg),
-                "-hide_banner",
-                "-loglevel",
-                "error",
-                "-y",
-                "-i",
-                str(word_emph_padded),
-                "-f",
-                "lavfi",
-                "-i",
-                "anullsrc=r=44100:cl=stereo",
-                "-t",
-                f"{emph_tail}",
-                "-filter_complex",
-                "[0:a][1:a]concat=n=2:v=0:a=1",
-                "-c:a",
-                "libmp3lame",
-                "-q:a",
-                "2",
-                str(tail_tmp),
-            ]
-        )
-        tail_tmp.replace(word_emph_padded)
-        ensure_duration(word_emph_padded, emph_duration)
         spelling_text = " ".join(list(word))
-        _tts_to_file(spelling_text, spelling_raw, voice=voice, rate=rate_example, pitch=pitch, volume=volume)
+        _tts_to_file(spelling_text, spelling_raw, voice=voice, rate="+20%", pitch="+5Hz", volume=volume)
         _tts_to_file(
             f"{word}.",
             pronounce_raw,
             voice=voice,
-            rate="+90%",
-            pitch=pitch_word_emph,
-            volume=adjust_percent(volume_word_emph, 50),
+            rate="+70%",
+            pitch="+10Hz",
+            volume=adjust_percent("0", 50),
         )
         apply_filter(pronounce_raw, pronounce_raw, "volume=1.5")
         try:
@@ -685,10 +558,9 @@ def build_timed_tts_audio(
                 str(example_combined),
             ]
         )
-        example_trimmed = example_combined
         example_max = max(0.0, example_end - example_start)
 
-        example_actual = _duration_seconds(ffprobe, example_trimmed)
+        example_actual = _duration_seconds(ffprobe, example_combined)
         pad_duration = max(0.0, example_max - example_actual)
         if pad_duration > 0.0:
             _run(
@@ -735,13 +607,43 @@ def build_timed_tts_audio(
                 str(tail_silence),
             ]
         )
-
+        print("example : ", _duration_seconds(ffprobe, example_combined))
+        example_combined_duration = _duration_seconds(ffprobe, example_combined)
+        legal_duration = total_duration - word_slow_end + 1.5
+        print("alloww duration: ", legal_duration)
+        if example_combined_duration > legal_duration:
+            increase_rate = min(
+                1.99,
+                round(example_combined_duration / legal_duration, 2),
+            )
+            print('increase_rate: ', round(example_combined_duration / legal_duration, 2))
+            fast_example = example_combined.with_name(
+                f"{example_combined.stem}_fast{example_combined.suffix}"
+            )
+            _run(
+                [
+                    str(ffmpeg),
+                    "-hide_banner",
+                    "-loglevel",
+                    "error",
+                    "-y",
+                    "-i",
+                    str(example_combined),
+                    "-filter:a",
+                    f"atempo={float(increase_rate):.2f}",
+                    "-c:a",
+                    "libmp3lame",
+                    "-q:a",
+                    "2",
+                    str(fast_example),
+                ]
+            )
+            fast_example.replace(example_combined)
         parts = [
             word_fast_trimmed,
             silence_25,
             word_slow_trimmed,
-            # word_emph_padded,
-            example_trimmed,
+            example_combined,
         ]
         if example_pad:
             parts.append(example_pad)
