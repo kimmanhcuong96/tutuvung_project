@@ -431,24 +431,32 @@ const IntroField: React.FC<{ word: string; frame: number }> = ({word, frame}) =>
                         opacity: 0.26,
                     }}
                 />
-                {articleLines.map((line, index) => (
-                    <div
-                        key={line}
-                        style={{
-                            position: "absolute",
-                            left: width * 0.06,
-                            right: width * 0.06,
-                            top: height * (0.05 + index * 0.18),
-                            fontFamily: bodyFont,
-                            fontWeight: 700,
-                            fontSize: Math.round(height * 0.12),
-                            lineHeight: 1.08,
-                            color: "rgba(0,0,0,0.38)",
-                        }}
-                    >
-                        {line}
-                    </div>
-                ))}
+                <div
+                    style={{
+                        position: "absolute",
+                        top: height * 0.05,
+                        left: width * 0.06,
+                        right: width * 0.06,
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: height * 0.04, // spacing tự động
+                    }}
+                >
+                    {articleLines.map((line) => (
+                        <div
+                            key={line}
+                            style={{
+                                fontFamily: bodyFont,
+                                fontWeight: 700,
+                                fontSize: Math.round(height * 0.1),
+                                lineHeight: 1.3,
+                                color: "rgba(0,0,0,0.38)",
+                            }}
+                        >
+                            {line}
+                        </div>
+                    ))}
+                </div>
             </div>
 
             <div
